@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 // 外部套件
 import axios from 'axios';
+import { Modal } from 'bootstrap';
 
 // 內部套件
 import logo from './assets/logo.svg';
@@ -13,15 +14,48 @@ function App() {
   const onChangeHandler = (e) => {
     setText(e.target.value);
   }
+  const modalRef = useRef(null);
+  const customModal = useRef(null);
+
   useEffect(() => {(async () => {
     const path = process.env.REACT_APP_PATH;
     const result = await axios.get(path);
     console.log(result);
+    openModal();
       })();
     }, []);
+
+  useEffect(() => {
+    customModal.current = new Modal(modalRef.current);
+  }, []);
+  const openModal = () => {
+    customModal.current.show();
+  }
+
   return (
     <div className="App">
       <header className="App-header">
+      <button type="button" className="btn btn-primary" onClick={()=>openModal()}>
+  Launch demo modal
+</button>
+        <div className="modal fade" ref={modalRef} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div className="modal-dialog">
+    <div className="modal-content">
+      <div className="modal-header">
+        <h5 className="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div className="modal-body">
+        ...
+      </div>
+      <div className="modal-footer">
+        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" className="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -39,6 +73,7 @@ function App() {
           value={text} onChangeHandler={onChangeHandler}></Input>
           {text}
         <button type="button" className="btn btn-primary">Primary</button>
+      
       </header>
     </div>
   );
