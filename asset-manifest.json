@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/TRIANGLER/static/css/main.12d992f0.css",
-    "main.js": "/TRIANGLER/static/js/main.56092ab1.js",
+    "main.js": "/TRIANGLER/static/js/main.5aad652e.js",
     "static/js/453.bcd66e99.chunk.js": "/TRIANGLER/static/js/453.bcd66e99.chunk.js",
     "static/media/logo.svg": "/TRIANGLER/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/TRIANGLER/index.html",
     "main.12d992f0.css.map": "/TRIANGLER/static/css/main.12d992f0.css.map",
-    "main.56092ab1.js.map": "/TRIANGLER/static/js/main.56092ab1.js.map",
+    "main.5aad652e.js.map": "/TRIANGLER/static/js/main.5aad652e.js.map",
     "453.bcd66e99.chunk.js.map": "/TRIANGLER/static/js/453.bcd66e99.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.12d992f0.css",
-    "static/js/main.56092ab1.js"
+    "static/js/main.5aad652e.js"
   ]
 }
