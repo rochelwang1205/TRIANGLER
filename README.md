@@ -45,3 +45,10 @@
 - Website - [Rochel Wang](https://github.com/rochelwang1205)
 - Frontend Mentor - [@Rochel Wang](https://www.frontendmentor.io/profile/rochelwang1205)
 - Twitter - [@RochelWang4](https://twitter.com/RochelWang4)
+
+## run up in local commend
+- client
+`npm run start`
+- server
+`node swagger.js` //產生文件
+`node server.js` //運行本機服務
