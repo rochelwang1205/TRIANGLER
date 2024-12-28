@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 // 外部套件
 import axios from 'axios';
 import { Modal } from 'bootstrap';
+import { apiService } from './services/api';
 
 // 內部套件
 import logo from './assets/logo.svg';
@@ -80,3 +81,28 @@ function App() {
 }
 
 export default App;
+
+// function App() {
+//   const [data, setData] = useState(null);
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const result = await apiService.getExample();
+//         setData(result);
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+//   return (
+//     <div>
+//       {/* 顯示資料 */}
+//     </div>
+//   );
+// }
+
+// export default App;

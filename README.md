@@ -33,6 +33,7 @@
 - Bootstrap
   
 ### The following goals
+- ⛓️2024/12/25 setup environment - Swagger
 - 🎈2024/11/29 setup environment!
 
 
