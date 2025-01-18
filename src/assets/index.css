@@ -1,20 +1,16 @@
-:root{
-	a{
+:root a{
   text-decoration: none;
   color: #fff;
 }
-/* navbar */
 .nav-item a{
 	color: #12082B;
 }
-/* footer */
 footer{
 	background-color: #2F1769;
 }
-/* component */
 button{
 	border: none;
 	background-color: transparent;
 }
-}
+
 

@@ -18,7 +18,7 @@ export default function Navbar() {
             borderBottom: '3px solid #2F1769'
         }}>
             <div className="container">
-                <a className="navbar-brand" href="/">Navbar</a>
+                <div className="navbar-brand" >Navbar</div>
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -42,8 +42,8 @@ export default function Navbar() {
                     </ul>
                 </div>
                 <div>
-                    <a href="/" className="mr-3"><RiShoppingBag4Line size={20} color="#000"/></a>
-                   <a href="/" onClick={handleLogin}><MdOutlineAccountCircle size={20} color="#000"/></a>
+                    <div className="mr-3"><RiShoppingBag4Line size={20} color="#000"/></div>
+                   <div onClick={handleLogin}><MdOutlineAccountCircle size={20} color="#000"/></div>
                 </div>
             </div>
         </nav>

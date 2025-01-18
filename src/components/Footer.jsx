@@ -1,5 +1,3 @@
-// import { Link } from "react-router-dom";
-import Logo from "../assets/material/img_illustration/img_home-recommand-sm.png"
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
 
 export default function Footer() {
@@ -7,42 +5,43 @@ export default function Footer() {
         <footer className="footer p-5">
             <div className="text-white">
                 <div className="container d-flex justify-content-between">
-                <div className="d-flex flex-column justify-content-between pe-lg-6 w-25">
-                    <a href="/"><img src={Logo} width={'200px'} alt="Triangle English"/></a>
+                <div className="d-flex flex-column justify-content-between pr-lg-6 w-25">
+                    Triangle 的 Logo
                     <div className="text-gray-03 text-center text-lg-start">
                         <p className="fs-6">Try and Go</p>
                         <p className="fs-6">開啟英語之門，邁向精通之路</p>
                     </div>
-                    <div className="d-flex gap-5">
-                        <a href="/" className="p-3"><FaFacebook size={32} color="#fff"/></a>
-                        <a href="/" className="p-3"><FaTwitter size={32} color="#fff"/></a>
-                        <a href="/" className="p-3"><FaInstagram size={32} color="#fff"/></a>
+                    <div className="d-flex">
+                        <FaFacebook size={32} color="#fff" className="mr-3"/>
+                        <FaTwitter size={32} color="#fff" className="mr-3"/>
+                        <FaInstagram size={32} color="#fff"/>
                     </div>
+                </div>
                 </div>
                 <div className="d-none d-lg-flex justify-content-between row w-75">
                     <div className="sub-nav col">
                         <h6 className="font-weight-bold">首頁</h6>
                         <ul className="list-unstyled">
-                            <li><a href="/">精選課程</a></li>
-                            <li><a href="/">熱門課程</a></li>
+                            <li>精選課程</li>
+                            <li>熱門課程</li>
                         </ul>
                     </div>
                     <div className="sub-nav col">
                         <h6 className="font-weight-bold">尋找課程</h6>
-                        <div className="d-flex gap-3">
-                            <ul className="list-unstyled">
-                                <li><a href="/">生活</a></li>
-                                <li><a href="/">旅遊</a></li>
-                                <li><a href="/">檢定</a></li>
-                                <li><a href="/">商務</a></li>
-                                <li><a href="/">時事</a></li>
-                                <li><a href="/">學術</a></li>
+                        <div className="d-flex">
+                            <ul className="list-unstyled mr-5">
+                                <li>生活</li>
+                                <li>旅遊</li>
+                                <li>檢定</li>
+                                <li>商務</li>
+                                <li>時事</li>
+                                <li>學術</li>
                             </ul>
                             <ul className="list-unstyled">
-                                <li><a href="/">影音</a></li>
-                                <li><a href="/">直播</a></li>
-                                <li><a href="/">演講</a></li>
-                                <li><a href="/">說明會</a></li>
+                                <li>影音</li>
+                                <li>直播</li>
+                                <li>演講</li>
+                                <li>說明會</li>
                             </ul>
                         </div>
                         
@@ -50,36 +49,35 @@ export default function Footer() {
                     <div className="sub-nav col">
                         <h6 className="font-weight-bold">FAQ</h6>
                         <ul className="list-unstyled">
-                            <li><a href="/">如何在平台學習</a></li>
-                            <li><a href="/">如何在平台開課</a></li>
-                            <li><a href="/">如何購買課程</a></li>
-                            <li><a href="/">課程相關</a></li>
-                            <li><a href="/">帳號相關</a></li>
-                            <li><a href="/">通知相關</a></li>
+                            <li>如何在平台學習</li>
+                            <li>如何在平台開課</li>
+                            <li>如何購買課程</li>
+                            <li>課程相關</li>
+                            <li>帳號相關</li>
+                            <li>通知相關</li>
                         </ul>
                     </div>
                     <div className="sub-nav col">
                         <h6 className="font-weight-bold">關於</h6>
                         <ul className="list-unstyled">
-                            <li><a href="/">品牌故事</a></li>
-                            <li><a href="/">平台理念</a></li>
-                            <li><a href="/">設計團隊</a></li>
-                            <li><a href="/">隱私權政策</a></li>
-                            <li><a href="/">使用者條款</a></li>
+                            <li>品牌故事</li>
+                            <li>平台理念</li>
+                            <li>設計團隊</li>
+                            <li>隱私權政策</li>
+                            <li>使用者條款</li>
                         </ul>
                     </div>
                     <div className="sub-nav col">
                         <h6 className="font-weight-bold">聯絡我們</h6>
                         <ul className="list-unstyled">
-                            <li><a href="/">線上課服</a></li>
-                            <li><a href="/">企業合作</a></li>
-                            <li><a href="/">媒體連繫</a></li>
-                            <li><a href="/">校園方案</a></li>
+                            <li>線上課服</li>
+                            <li>企業合作</li>
+                            <li>媒體連繫</li>
+                            <li>校園方案</li>
                         </ul>
                 </div>
                 </div>
                 </div>
-            </div>
         </footer>
     );
 }

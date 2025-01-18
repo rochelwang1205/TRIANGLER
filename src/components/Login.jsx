@@ -24,7 +24,7 @@ export function Login({ show, onClose }) {
                             <h5 className="modal-title">登入</h5>
                             <button type="button" className="btn-close" onClick={onClose}></button>
                         <div className="text-center my-2">
-                            <p className="m-0">還沒有帳號？<a href="/register" className="text-dark">立即註冊</a></p>
+                            <p className="m-0">還沒有帳號？<div className="text-dark">立即註冊</div></p>
                         </div>
                         </div>
                         <div className="modal-body">
@@ -42,7 +42,7 @@ export function Login({ show, onClose }) {
                                         <input type="checkbox" className="form-check-input" id="remember" />
                                         <label className="form-check-label" htmlFor="remember">記住我</label>
                                     </div>
-                                    <a href="/forgot-password" className="text-decoration-none">忘記密碼？</a>
+                                    <div className="text-decoration-none">忘記密碼？</div>
                                 </div>
                                 <button type="submit" className="btn btn-primary w-100">登入</button>
                             </form>
