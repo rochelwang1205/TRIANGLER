@@ -19,7 +19,7 @@
 
 ### Links
 
-- Solution URL: [repo](https://github.com/rochelwang1205/triangle)
+- Solution URL: [repo](https://github.com/rochelwang1205/TRIANGLER)
 - Live Site URL: [pages](https://rochelwang1205.github.io/triangle/)
 
 ## My process
@@ -33,6 +33,8 @@
 - Bootstrap
   
 ### The following goals
+- 🖋️2025/01/18 layout-navbar&footer&login modal (4hrs)
+- 🔥2024/12/28 test client and local server & BrowserRouter(3.5hrs)
 - ⛓️2024/12/25 setup environment - Swagger
 - 🎈2024/11/29 setup environment!
 
