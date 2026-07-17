@@ -1,0 +1,553 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "account": "demo_user",
+      "password": "password123",
+      "name": "Demo User"
+    },
+    {
+      "id": 2,
+      "account": "test_user",
+      "password": "test1234",
+      "name": "Test User"
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "title": "商務會話技巧",
+      "image": "/images/courses/hot-1.png",
+      "tag": "商務",
+      "level": "B2",
+      "author": "Sarah Chen",
+      "dept": "商務英文",
+      "price": 3200,
+      "students": 105,
+      "isHot": true,
+      "createdAt": "2025-06-01T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "IELTS考試成功策略",
+      "image": "/images/courses/hot-2.png",
+      "tag": "檢定",
+      "level": "C1",
+      "author": "James Wu",
+      "dept": "檢定英文",
+      "price": 5500,
+      "students": 200,
+      "isHot": true,
+      "createdAt": "2025-05-15T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "title": "高級會話技巧",
+      "image": "/images/courses/hot-3.png",
+      "tag": "生活",
+      "level": "C1",
+      "author": "Emily Lin",
+      "dept": "生活英文",
+      "price": 2800,
+      "students": 90,
+      "isHot": true,
+      "createdAt": "2025-04-20T00:00:00.000Z"
+    },
+    {
+      "id": 4,
+      "title": "30天商務英語必備技能",
+      "image": "/images/courses/hot-4.png",
+      "tag": "商務",
+      "level": "B2",
+      "author": "David Wang",
+      "dept": "商務英文",
+      "price": 3600,
+      "students": 103,
+      "isHot": true,
+      "createdAt": "2025-03-10T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "title": "IELTS 7分衝刺班",
+      "image": "/images/courses/test-1.png",
+      "tag": "檢定",
+      "level": "C1",
+      "author": "Sarah Chen",
+      "dept": "檢定英文",
+      "price": 5500,
+      "students": 180,
+      "isHot": false,
+      "createdAt": "2025-06-10T00:00:00.000Z"
+    },
+    {
+      "id": 6,
+      "title": "TOEIC 900分攻略",
+      "image": "/images/courses/test-2.png",
+      "tag": "檢定",
+      "level": "B2",
+      "author": "James Wu",
+      "dept": "檢定英文",
+      "price": 3200,
+      "students": 250,
+      "isHot": false,
+      "createdAt": "2025-05-20T00:00:00.000Z"
+    },
+    {
+      "id": 7,
+      "title": "托福寫作精修班",
+      "image": "/images/courses/test-3.png",
+      "tag": "檢定",
+      "level": "C1",
+      "author": "Emily Lin",
+      "dept": "檢定英文",
+      "price": 4800,
+      "students": 120,
+      "isHot": false,
+      "createdAt": "2025-04-01T00:00:00.000Z"
+    },
+    {
+      "id": 8,
+      "title": "GEPT 中高級班",
+      "image": "/images/courses/test-4.png",
+      "tag": "檢定",
+      "level": "B2",
+      "author": "David Wang",
+      "dept": "檢定英文",
+      "price": 2800,
+      "students": 95,
+      "isHot": false,
+      "createdAt": "2025-03-25T00:00:00.000Z"
+    },
+    {
+      "id": 9,
+      "title": "多益聽力強化",
+      "image": "/images/courses/test-5.png",
+      "tag": "檢定",
+      "level": "B1",
+      "author": "Amy Huang",
+      "dept": "檢定英文",
+      "price": 1200,
+      "students": 310,
+      "isHot": false,
+      "createdAt": "2025-02-14T00:00:00.000Z"
+    },
+    {
+      "id": 10,
+      "title": "雅思口說特訓",
+      "image": "/images/courses/test-6.png",
+      "tag": "檢定",
+      "level": "C2",
+      "author": "Michael Lee",
+      "dept": "檢定英文",
+      "price": 3600,
+      "students": 88,
+      "isHot": false,
+      "createdAt": "2025-01-30T00:00:00.000Z"
+    },
+    {
+      "id": 11,
+      "title": "每日英文提升計畫",
+      "image": "/images/courses/daily-1.png",
+      "tag": "生活",
+      "level": "A2",
+      "author": "Lisa Chang",
+      "dept": "生活英文",
+      "price": 1200,
+      "students": 103,
+      "isHot": false,
+      "createdAt": "2025-06-05T00:00:00.000Z"
+    },
+    {
+      "id": 12,
+      "title": "日常會話100句",
+      "image": "/images/courses/daily-2.png",
+      "tag": "生活",
+      "level": "A1",
+      "author": "Tom Hsu",
+      "dept": "生活英文",
+      "price": 0,
+      "students": 520,
+      "isHot": false,
+      "createdAt": "2025-05-01T00:00:00.000Z"
+    },
+    {
+      "id": 13,
+      "title": "職場英文入門",
+      "image": "/images/courses/daily-3.png",
+      "tag": "生活",
+      "level": "B1",
+      "author": "Grace Liu",
+      "dept": "生活英文",
+      "price": 980,
+      "students": 210,
+      "isHot": false,
+      "createdAt": "2025-04-15T00:00:00.000Z"
+    },
+    {
+      "id": 14,
+      "title": "看電影學英文",
+      "image": "/images/courses/daily-4.png",
+      "tag": "生活",
+      "level": "B2",
+      "author": "Kevin Tsai",
+      "dept": "生活英文",
+      "price": 1500,
+      "students": 175,
+      "isHot": false,
+      "createdAt": "2025-03-20T00:00:00.000Z"
+    },
+    {
+      "id": 15,
+      "title": "英文發音矯正",
+      "image": "/images/courses/daily-5.png",
+      "tag": "生活",
+      "level": "A2",
+      "author": "Jenny Lo",
+      "dept": "生活英文",
+      "price": 880,
+      "students": 140,
+      "isHot": false,
+      "createdAt": "2025-02-28T00:00:00.000Z"
+    },
+    {
+      "id": 16,
+      "title": "英文寫作基礎",
+      "image": "/images/courses/daily-6.png",
+      "tag": "生活",
+      "level": "B1",
+      "author": "Peter Chen",
+      "dept": "生活英文",
+      "price": 1100,
+      "students": 98,
+      "isHot": false,
+      "createdAt": "2025-01-15T00:00:00.000Z"
+    },
+    {
+      "id": 17,
+      "title": "商務英文精修",
+      "image": "/images/courses/business-1.png",
+      "tag": "商務",
+      "level": "B2",
+      "author": "Sarah Chen",
+      "dept": "商務英文",
+      "price": 3200,
+      "students": 160,
+      "isHot": false,
+      "createdAt": "2025-06-08T00:00:00.000Z"
+    },
+    {
+      "id": 18,
+      "title": "商業簡報技巧",
+      "image": "/images/courses/business-2.png",
+      "tag": "商務",
+      "level": "C1",
+      "author": "James Wu",
+      "dept": "商務英文",
+      "price": 4500,
+      "students": 75,
+      "isHot": false,
+      "createdAt": "2025-05-18T00:00:00.000Z"
+    },
+    {
+      "id": 19,
+      "title": "跨文化溝通",
+      "image": "/images/courses/business-3.png",
+      "tag": "商務",
+      "level": "B2",
+      "author": "Emily Lin",
+      "dept": "商務英文",
+      "price": 2800,
+      "students": 110,
+      "isHot": false,
+      "createdAt": "2025-04-05T00:00:00.000Z"
+    },
+    {
+      "id": 20,
+      "title": "商務書信寫作",
+      "image": "/images/courses/business-4.png",
+      "tag": "商務",
+      "level": "B1",
+      "author": "David Wang",
+      "dept": "商務英文",
+      "price": 1800,
+      "students": 130,
+      "isHot": false,
+      "createdAt": "2025-03-12T00:00:00.000Z"
+    },
+    {
+      "id": 21,
+      "title": "面試英文攻略",
+      "image": "/images/courses/business-5.png",
+      "tag": "商務",
+      "level": "B2",
+      "author": "Amy Huang",
+      "dept": "商務英文",
+      "price": 2200,
+      "students": 195,
+      "isHot": false,
+      "createdAt": "2025-02-20T00:00:00.000Z"
+    },
+    {
+      "id": 22,
+      "title": "旅遊英文實用句",
+      "image": "/images/courses/travel-1.png",
+      "tag": "旅遊",
+      "level": "A2",
+      "author": "Michael Lee",
+      "dept": "旅遊英文",
+      "price": 980,
+      "students": 280,
+      "isHot": false,
+      "createdAt": "2025-06-02T00:00:00.000Z"
+    },
+    {
+      "id": 23,
+      "title": "機場英文會話",
+      "image": "/images/courses/travel-2.png",
+      "tag": "旅遊",
+      "level": "A1",
+      "author": "Lisa Chang",
+      "dept": "旅遊英文",
+      "price": 0,
+      "students": 450,
+      "isHot": false,
+      "createdAt": "2025-05-10T00:00:00.000Z"
+    },
+    {
+      "id": 24,
+      "title": "海外自由行英文",
+      "image": "/images/courses/travel-3.png",
+      "tag": "旅遊",
+      "level": "B1",
+      "author": "Tom Hsu",
+      "dept": "旅遊英文",
+      "price": 1500,
+      "students": 165,
+      "isHot": false,
+      "createdAt": "2025-04-22T00:00:00.000Z"
+    },
+    {
+      "id": 25,
+      "title": "飯店訂房英文",
+      "image": "/images/courses/travel-4.png",
+      "tag": "旅遊",
+      "level": "A2",
+      "author": "Grace Liu",
+      "dept": "旅遊英文",
+      "price": 880,
+      "students": 220,
+      "isHot": false,
+      "createdAt": "2025-03-08T00:00:00.000Z"
+    },
+    {
+      "id": 26,
+      "title": "購物英文指南",
+      "image": "/images/courses/travel-5.png",
+      "tag": "旅遊",
+      "level": "A1",
+      "author": "Kevin Tsai",
+      "dept": "旅遊英文",
+      "price": 680,
+      "students": 190,
+      "isHot": false,
+      "createdAt": "2025-02-05T00:00:00.000Z"
+    },
+    {
+      "id": 27,
+      "title": "學術英文寫作",
+      "image": "/images/courses/academic-1.png",
+      "tag": "學術",
+      "level": "C1",
+      "author": "Jenny Lo",
+      "dept": "學術英文",
+      "price": 5500,
+      "students": 60,
+      "isHot": false,
+      "createdAt": "2025-06-12T00:00:00.000Z"
+    },
+    {
+      "id": 28,
+      "title": "論文摘要撰寫",
+      "image": "/images/courses/test-1.png",
+      "tag": "學術",
+      "level": "C2",
+      "author": "Peter Chen",
+      "dept": "學術英文",
+      "price": 4800,
+      "students": 45,
+      "isHot": false,
+      "createdAt": "2025-05-25T00:00:00.000Z"
+    }
+  ],
+  "faqCategories": [
+    {
+      "id": "common",
+      "title": "常見問題",
+      "items": [
+        {
+          "title": "課程退費",
+          "content": [
+            "購買課程後 7 日內，若未觀看超過 20% 的課程內容，可申請全額退費。",
+            "超過 7 日或已觀看超過 20% 的課程內容，恕不接受退費申請。如有特殊情況，請聯繫客服。"
+          ]
+        },
+        {
+          "title": "課程影片無法播放",
+          "content": [
+            "1. 請確認您的網路連線是否正常。",
+            "2. 嘗試重新整理頁面或清除瀏覽器快取。",
+            "3. 建議使用 Chrome、Firefox 或 Safari 最新版本瀏覽器。",
+            "4. 若問題持續，請聯繫線上客服。"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "how-to-learn",
+      "title": "如何在平台上學習",
+      "items": [
+        {
+          "title": "如何開始學習",
+          "content": ["購買課程後，前往「我的課程」即可開始學習。課程支援隨時暫停與繼續。"]
+        }
+      ]
+    },
+    {
+      "id": "account",
+      "title": "帳號與個人檔案",
+      "items": [
+        {
+          "title": "如何修改個人資料",
+          "content": ["登入後點選右上角個人圖示，進入「個人檔案」即可修改姓名、頭像等資訊。"]
+        }
+      ]
+    },
+    {
+      "id": "purchase",
+      "title": "購買課程",
+      "items": [
+        {
+          "title": "付款方式",
+          "content": ["平台支援信用卡、ATM 轉帳及超商付款等多種付款方式。"]
+        }
+      ]
+    },
+    {
+      "id": "notification",
+      "title": "訊息通知",
+      "items": [
+        {
+          "title": "如何管理通知",
+          "content": ["前往「設定 > 通知偏好」即可自訂想要接收的通知類型。"]
+        }
+      ]
+    },
+    {
+      "id": "start-course",
+      "title": "如何開課",
+      "items": [
+        {
+          "title": "成為講師",
+          "content": ["如有興趣在 Triangle 平台上開設課程，請聯繫企業合作專線。"]
+        }
+      ]
+    }
+  ],
+  "quizQuestions": [
+    {
+      "id": 1,
+      "title": "Q1. 我的年齡",
+      "options": ["18歲以下", "18~25歲", "26~35歲", "36~45歲", "45歲以上"]
+    },
+    {
+      "id": 2,
+      "title": "Q2. 我的英文能力",
+      "options": [
+        "我會使用一些簡單的日常用語",
+        "我可以用英文應付大部分日常對話",
+        "我可以用英文進行商務溝通",
+        "我可以用英文進行學術討論",
+        "我可以用英文進行專業領域的深入交流"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Q3. 我學習英文的原因",
+      "options": ["個人興趣", "工作需求", "學術研究", "準備英文檢定", "了解新聞時事"]
+    },
+    {
+      "id": 4,
+      "title": "Q4. 我想要提升的英文能力",
+      "options": ["聽力", "口說", "閱讀", "寫作", "聽說讀寫都要！"]
+    },
+    {
+      "id": 5,
+      "title": "Q5. 我喜歡的學習方式",
+      "options": [
+        "可以依照自己的學習速度彈性學習",
+        "可以和老師即時互動、同步學習",
+        "可以一次深入學習到完整的知識",
+        "先探索自己可能有興趣的學習主題",
+        "可以在零碎時間慢慢學習"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Q6. 我每週學習英文的時間",
+      "options": ["1小時以下", "1~2小時", "3~5小時", "6~8小時", "8小時以上"]
+    }
+  ],
+  "recommendResults": [
+    {
+      "id": 11,
+      "title": "每日英文提升計畫",
+      "image": "/images/courses/daily-1.png",
+      "students": 103
+    },
+    {
+      "id": 3,
+      "title": "高級會話技巧",
+      "image": "/images/courses/hot-3.png",
+      "students": 90
+    },
+    {
+      "id": 2,
+      "title": "IELTS考試成功策略",
+      "image": "/images/courses/hot-2.png",
+      "students": 200
+    },
+    {
+      "id": 4,
+      "title": "30天商務英語必備技能",
+      "image": "/images/courses/hot-4.png",
+      "students": 103
+    }
+  ],
+  "testimonials": [
+    {
+      "id": 1,
+      "rating": 5,
+      "text": "Triangle 的課程讓我在忙碌的工作中也能有效學習英文，間隔重複的設計真的很棒！"
+    },
+    {
+      "id": 2,
+      "rating": 5,
+      "text": "客製化推薦功能幫我找到了最適合的課程，學習效率大幅提升。"
+    },
+    {
+      "id": 3,
+      "rating": 4,
+      "text": "平台介面簡潔好用，課程內容豐富多元，非常推薦給想學英文的朋友！"
+    }
+  ],
+  "themes": [
+    { "id": "all", "label": "ALL", "icon": null },
+    { "id": "life", "label": "生活", "icon": "life" },
+    { "id": "travel", "label": "旅遊", "icon": "travel" },
+    { "id": "business", "label": "商務", "icon": "business" },
+    { "id": "academic", "label": "學術", "icon": "academic" },
+    { "id": "test", "label": "檢定", "icon": "test" },
+    { "id": "language", "label": "語言", "icon": "language" },
+    { "id": "other", "label": "其他", "icon": "other" }
+  ]
+}
