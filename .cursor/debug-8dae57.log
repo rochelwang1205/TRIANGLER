@@ -1,0 +1,18 @@
+{"sessionId":"8dae57","location":"Cart.jsx:handleCheckout","message":"checkout auth check","data":{"isLoggedIn":true},"timestamp":1785382559905,"hypothesisId":"H1","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"Checkout.jsx:mount","message":"checkout auth check","data":{"isLoggedIn":true},"timestamp":1785382559914,"hypothesisId":"H2","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"Checkout.jsx:mount","message":"checkout auth check","data":{"isLoggedIn":true},"timestamp":1785382559915,"hypothesisId":"H2","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"Checkout.jsx:handlePay","message":"pay auth check","data":{"isLoggedIn":true},"timestamp":1785382562357,"hypothesisId":"H2","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"PaymentProcessing.jsx:mount","message":"processing auth check","data":{"isLoggedIn":true},"timestamp":1785382562361,"hypothesisId":"H1","runId":"pay-fix"}
+{"sessionId":"8dae57","location":"PaymentProcessing.jsx:mount","message":"processing auth check","data":{"isLoggedIn":true},"timestamp":1785382562362,"hypothesisId":"H1","runId":"pay-fix"}
+{"sessionId":"8dae57","location":"PaymentProcessing.jsx:complete","message":"payment success","data":{"isLoggedIn":true},"timestamp":1785382564373,"hypothesisId":"H2","runId":"pay-fix"}
+{"sessionId":"8dae57","location":"Profile.jsx:mount","message":"profile auth check","data":{"isLoggedIn":true},"timestamp":1785382566417,"hypothesisId":"H4","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"Profile.jsx:mount","message":"profile auth check","data":{"isLoggedIn":true},"timestamp":1785382566418,"hypothesisId":"H4","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"Cart.jsx:handleCheckout","message":"checkout auth check","data":{"isLoggedIn":false},"timestamp":1785382581173,"hypothesisId":"H1","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"Checkout.jsx:mount","message":"checkout auth check","data":{"isLoggedIn":true},"timestamp":1785382582869,"hypothesisId":"H2","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"Checkout.jsx:mount","message":"checkout auth check","data":{"isLoggedIn":true},"timestamp":1785382582870,"hypothesisId":"H2","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"Checkout.jsx:handlePay","message":"pay auth check","data":{"isLoggedIn":true},"timestamp":1785382584256,"hypothesisId":"H2","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"PaymentProcessing.jsx:mount","message":"processing auth check","data":{"isLoggedIn":true},"timestamp":1785382584259,"hypothesisId":"H1","runId":"pay-fix"}
+{"sessionId":"8dae57","location":"PaymentProcessing.jsx:mount","message":"processing auth check","data":{"isLoggedIn":true},"timestamp":1785382584260,"hypothesisId":"H1","runId":"pay-fix"}
+{"sessionId":"8dae57","location":"PaymentProcessing.jsx:complete","message":"payment success","data":{"isLoggedIn":true},"timestamp":1785382586274,"hypothesisId":"H2","runId":"pay-fix"}
+{"sessionId":"8dae57","location":"Profile.jsx:mount","message":"profile auth check","data":{"isLoggedIn":true},"timestamp":1785382587491,"hypothesisId":"H4","runId":"auth-fix"}
+{"sessionId":"8dae57","location":"Profile.jsx:mount","message":"profile auth check","data":{"isLoggedIn":true},"timestamp":1785382587491,"hypothesisId":"H4","runId":"auth-fix"}

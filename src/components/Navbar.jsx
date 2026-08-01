@@ -1,53 +1,117 @@
-import { Link } from "react-router-dom";
-import { RiShoppingBag4Line } from "react-icons/ri";
-import { MdOutlineAccountCircle } from "react-icons/md";
-import { Login } from "./Login";
-import { useState } from "react";
-export default function Navbar() {  
-    const [showLogin, setShowLogin] = useState(false);
+import { Link } from 'react-router-dom';
+import { RiShoppingBag4Line } from 'react-icons/ri';
+import { MdOutlineAccountCircle, MdMenu } from 'react-icons/md';
+import MobileMenu from './MobileMenu';
+import { useState } from 'react';
+import {
+  Login,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  ResetSuccess,
+} from '@/features/auth/components/Login';
+import { useCart } from '@/features/cart/context/CartContext';
+import { useAuth } from '@/features/auth/context/AuthContext';
 
-    const handleLogin = (e) => {
-        e.preventDefault();
-        setShowLogin(true);
-    }
-    return (
+export default function Navbar() {
+  const [modal, setModal] = useState(null);
+  const [resetAccount, setResetAccount] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { count } = useCart();
+  const { user, login, logout } = useAuth();
+
+  const closeModal = () => setModal(null);
+
+  const handleAuthSuccess = (loggedInUser) => {
+    login(loggedInUser, localStorage.getItem('token'));
+  };
+
+  const handleLogout = () => {
+    logout();
+  };
+
+  return (
     <>
-        <nav className="navbar sticky-top navbar-expand-lg" 
-        style={{     
-            backgroundColor: '#F9F8FC',
-            borderBottom: '3px solid #2F1769'
-        }}>
-            <div className="container">
-                <div className="navbar-brand" >Navbar</div>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarNav">
-                    <ul className="navbar-nav">
-                        <li className="nav-item mr-4">
-                            <Link className="nav-link"  to="/">首頁</Link>
-                        </li>
-                        <li className="nav-item mr-4">
-                            <Link className="nav-link" to="/explore">尋找課程</Link>
-                        </li>
-                        <li className="nav-item mr-4">
-                            <Link className="nav-link" to="/FAQ">FAQ</Link>
-                        </li>
-                        <li className="nav-item mr-4">
-                            <Link className="nav-link" to="/about">關於</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/contact">聯絡我們</Link>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <div className="mr-3"><RiShoppingBag4Line size={20} color="#000"/></div>
-                   <div onClick={handleLogin}><MdOutlineAccountCircle size={20} color="#000"/></div>
-                </div>
-            </div>
-        </nav>
-        <Login show={showLogin} onClose={() => setShowLogin(false)} />
+      <nav className="navbar sticky-top navbar-expand-lg site-navbar">
+        <div className="container">
+          <Link className="navbar-brand site-logo" to="/">
+            Tr<span className="site-logo__i">i</span>angle
+          </Link>
+          <button
+            className="navbar-toggler d-lg-none"
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            aria-label="開啟選單"
+          >
+            <MdMenu size={24} />
+          </button>
+          <div className="collapse navbar-collapse justify-content-center d-none d-lg-flex" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item"><Link className="nav-link" to="/">首頁</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/explore">尋找課程</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/FAQ">FAQ</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/about">關於</Link></li>
+              <li className="nav-item"><Link className="nav-link" to="/contact">聯絡我們</Link></li>
+            </ul>
+          </div>
+          <div className="navbar-icons">
+            <Link to="/cart" className="navbar-icons__cart" aria-label="購物車">
+              <RiShoppingBag4Line size={22} />
+              {count > 0 && <span className="navbar-icons__badge">{count}</span>}
+            </Link>
+            {user ? (
+              <Link to="/profile" aria-label="我的帳戶" title={user.name}>
+                <MdOutlineAccountCircle size={24} />
+              </Link>
+            ) : (
+              <button type="button" aria-label="登入" onClick={() => setModal('login')}>
+                <MdOutlineAccountCircle size={24} />
+              </button>
+            )}
+          </div>
+        </div>
+      </nav>
+
+      <MobileMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        user={user}
+        onLogin={() => setModal('login')}
+      />
+
+      <Login
+        show={modal === 'login'}
+        onClose={closeModal}
+        onRegister={() => setModal('register')}
+        onForgotPassword={() => setModal('forgot')}
+        onSuccess={handleAuthSuccess}
+      />
+      <Register
+        show={modal === 'register'}
+        onClose={closeModal}
+        onLogin={() => setModal('login')}
+        onSuccess={handleAuthSuccess}
+      />
+      <ForgotPassword
+        show={modal === 'forgot'}
+        onClose={closeModal}
+        onBack={() => setModal('login')}
+        onSent={(account) => {
+          setResetAccount(account);
+          setModal('reset');
+        }}
+      />
+      <ResetPassword
+        show={modal === 'reset'}
+        onClose={closeModal}
+        account={resetAccount}
+        onComplete={() => setModal('resetSuccess')}
+      />
+      <ResetSuccess
+        show={modal === 'resetSuccess'}
+        onClose={closeModal}
+        onLogin={() => setModal('login')}
+      />
     </>
-    );
+  );
 }

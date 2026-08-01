@@ -1,83 +1,84 @@
-import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
-    return (
-        <footer className="footer p-5">
-            <div className="text-white">
-                <div className="container d-flex justify-content-between">
-                <div className="d-flex flex-column justify-content-between pr-lg-6 w-25">
-                    Triangle 的 Logo
-                    <div className="text-gray-03 text-center text-lg-start">
-                        <p className="fs-6">Try and Go</p>
-                        <p className="fs-6">開啟英語之門，邁向精通之路</p>
-                    </div>
-                    <div className="d-flex">
-                        <FaFacebook size={32} color="#fff" className="mr-3"/>
-                        <FaTwitter size={32} color="#fff" className="mr-3"/>
-                        <FaInstagram size={32} color="#fff"/>
-                    </div>
-                </div>
-                </div>
-                <div className="d-none d-lg-flex justify-content-between row w-75">
-                    <div className="sub-nav col">
-                        <h6 className="font-weight-bold">首頁</h6>
-                        <ul className="list-unstyled">
-                            <li>精選課程</li>
-                            <li>熱門課程</li>
-                        </ul>
-                    </div>
-                    <div className="sub-nav col">
-                        <h6 className="font-weight-bold">尋找課程</h6>
-                        <div className="d-flex">
-                            <ul className="list-unstyled mr-5">
-                                <li>生活</li>
-                                <li>旅遊</li>
-                                <li>檢定</li>
-                                <li>商務</li>
-                                <li>時事</li>
-                                <li>學術</li>
-                            </ul>
-                            <ul className="list-unstyled">
-                                <li>影音</li>
-                                <li>直播</li>
-                                <li>演講</li>
-                                <li>說明會</li>
-                            </ul>
-                        </div>
-                        
-                    </div>
-                    <div className="sub-nav col">
-                        <h6 className="font-weight-bold">FAQ</h6>
-                        <ul className="list-unstyled">
-                            <li>如何在平台學習</li>
-                            <li>如何在平台開課</li>
-                            <li>如何購買課程</li>
-                            <li>課程相關</li>
-                            <li>帳號相關</li>
-                            <li>通知相關</li>
-                        </ul>
-                    </div>
-                    <div className="sub-nav col">
-                        <h6 className="font-weight-bold">關於</h6>
-                        <ul className="list-unstyled">
-                            <li>品牌故事</li>
-                            <li>平台理念</li>
-                            <li>設計團隊</li>
-                            <li>隱私權政策</li>
-                            <li>使用者條款</li>
-                        </ul>
-                    </div>
-                    <div className="sub-nav col">
-                        <h6 className="font-weight-bold">聯絡我們</h6>
-                        <ul className="list-unstyled">
-                            <li>線上課服</li>
-                            <li>企業合作</li>
-                            <li>媒體連繫</li>
-                            <li>校園方案</li>
-                        </ul>
-                </div>
-                </div>
-                </div>
-        </footer>
-    );
+  return (
+    <footer className="site-footer">
+      <div className="container site-footer__inner">
+        <div className="site-footer__brand">
+          <Link to="/" className="site-logo site-logo--white">
+            Tr<span className="site-logo__i">i</span>angle
+          </Link>
+          <div className="site-footer__slogan">
+            <p>Try and Go</p>
+            <p>開啟你的英語之門，通向精通之路</p>
+          </div>
+          <div className="site-footer__social">
+            <a href="https://wangrochel.wixsite.com/cydesign2021" aria-label="Facebook"><FaFacebook size={28} /></a>
+            <a href="https://wangrochel.wixsite.com/cydesign2021" aria-label="Twitter"><FaTwitter size={28} /></a>
+            <a href="https://wangrochel.wixsite.com/cydesign2021" aria-label="Instagram"><FaInstagram size={28} /></a>
+          </div>
+        </div>
+
+        <div className="site-footer__links">
+          <div className="footer-col">
+            <h6>首頁</h6>
+            <ul>
+              <li>精選課程</li>
+              <li>熱門課程</li>
+            </ul>
+          </div>
+          <div className="footer-col footer-col--wide">
+            <h6>尋找課程</h6>
+            <div className="footer-col__split">
+              <ul>
+                <li>影音課</li>
+                <li>直播課</li>
+                <li>演講</li>
+                <li>說明會</li>
+              </ul>
+              <ul>
+                <li>生活英文</li>
+                <li>旅遊英文</li>
+                <li>商務英文</li>
+                <li>學術英文</li>
+                <li>檢定英文</li>
+                <li>時事英文</li>
+              </ul>
+            </div>
+          </div>
+          <div className="footer-col">
+            <h6>FAQ</h6>
+            <ul>
+              <li><Link to="/FAQ">常見問題</Link></li>
+              <li>如何在平台上學習</li>
+              <li>帳號與個人檔案</li>
+              <li>購買課程</li>
+              <li>訊息通知</li>
+              <li>如何開課</li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h6>關於</h6>
+            <ul>
+              <li><Link to="/about">品牌故事</Link></li>
+              <li>平台理念</li>
+              <li>設計團隊</li>
+              <li>隱私權政策</li>
+              <li>使用者條款</li>
+            </ul>
+          </div>
+          <div className="footer-col">
+            <h6>聯絡我們</h6>
+            <ul>
+              <li><Link to="/contact">線上客服</Link></li>
+              <li>企業合作</li>
+              <li>媒體聯繫</li>
+              <li>校園方案</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 }

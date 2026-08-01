@@ -20,23 +20,46 @@
 ### Links
 
 - Solution URL: [repo](https://github.com/rochelwang1205/TRIANGLER)
-- Live Site URL: [pages](https://rochelwang1205.github.io/triangle/)
+- Live Site URL: [pages](https://rochelwang1205.github.io/TRIANGLER/)
 
 ## My process
 
+專案採 **feature-based 目錄結構**（`features/auth`、`courses`、`cart` 等）搭配共用 `components/`、`lib/` 分層，API 層以 `static` / `server` 雙模式運作：本機開發可串接 json-server，GitHub Pages 部署則讀取靜態 `db.json`。前端資料流使用 **TanStack React Query** 管理 server state，表單驗證以 **react-hook-form + Zod** 集中定義 schema，並以 **Vitest** 覆蓋核心 utils 與驗證邏輯。
+
 ### Built with
 
-- git, Node.js
-- Vite
-- SASS/SCSS
-- React (CRA)
-- Bootstrap
-  
+**Frontend**
+- React 18、Vite 6、React Router 6
+- Bootstrap 5、SASS/SCSS（自訂 BEM 元件樣式）
+- TanStack React Query、react-hook-form、Zod
+- react-icons
+
+**API & Mock Server**
+- Express + json-server（本機 mock API）
+- OpenAPI 3.0（Swagger UI）
+- 靜態 API 模式（GitHub Pages 部署用）
+
+**Testing & Tooling**
+- Vitest、Testing Library
+- API smoke test（`npm run test:api`）
+- gh-pages 部署至 GitHub Pages
+
+**Architecture**
+- Feature modules（auth / courses / cart / profile / recommend…）
+- Error Boundary 全域錯誤處理
+- Git、Node.js
+
 ### The following goals
-- 🖋️2025/01/18 layout-navbar&footer&login modal (4hrs)
-- 🔥2024/12/28 test client and local server & BrowserRouter(3.5hrs)
-- ⛓️2024/12/25 setup environment - Swagger
-- 🎈2024/11/29 setup environment!
+
+- ✅ 2026/08/01 Bootstrap 4 → 5 遷移、Vitest 單元測試、Error Boundary
+- ✅ 2026/08/01 Feature 目錄重構、React Query 整合、表單驗證
+- ✅ 2026/08/01 Explore 進階篩選串接、GitHub Pages base path 對齊
+- ✅ 2026/07/30 收藏 API、結帳訂單、課程詳情獨立資料、Swagger 補齊
+- ✅ 2026/07/17 CRA → Vite 遷移、靜態/伺服器雙模式 API
+- 🖋️ 2025/01/18 layout — navbar、footer、login modal（4hrs）
+- 🔥 2024/12/28 本機 client + server 測試、BrowserRouter（3.5hrs）
+- ⛓️ 2024/12/25 環境建置 — Swagger mock API
+- 🎈 2024/11/29 專案環境初始化
 
 
 ### Useful resources
@@ -49,8 +72,11 @@
 - Twitter - [@RochelWang4](https://twitter.com/RochelWang4)
 
 ## run up in local commend
-- client
-`npm run start`
-- server
-`node swagger.js` //產生文件
-`node server.js` //運行本機服務
+- client (static API mode)
+`npm run dev`
+- client + server
+`npm run dev:all`
+- mock API only
+`npm run server`
+- deploy GitHub Pages
+`npm run deploy`

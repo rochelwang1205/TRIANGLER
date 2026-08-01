@@ -1,0 +1,23 @@
+{"sessionId":"2e520d","location":"index.jsx:boot","message":"Vite app bootstrap","data":{"baseUrl":"/TRIANGLER/","mode":"development","dev":true},"timestamp":1784280156407,"hypothesisId":"H1-base-path"}
+{"sessionId":"2e520d","runId":"post-fix","location":"index.jsx:rendered","message":"React root rendered","data":{"pathname":"/TRIANGLER/"},"timestamp":1784280156413,"hypothesisId":"H2-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"index.jsx:scss-check","message":"Bootstrap SCSS loaded check","data":{"navbarFound":false},"timestamp":1784280156433,"hypothesisId":"H2-scss"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280156443,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280156445,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280162703,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280162704,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280164576,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280164577,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280172421,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280172422,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/explore","search":"","hash":""},"timestamp":1784280174784,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/explore","search":"","hash":""},"timestamp":1784280174784,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280175713,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/","search":"","hash":""},"timestamp":1784280175714,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/explore","search":"","hash":""},"timestamp":1784280177873,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/explore","search":"","hash":""},"timestamp":1784280177874,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/FAQ","search":"","hash":""},"timestamp":1784280178863,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/FAQ","search":"","hash":""},"timestamp":1784280178863,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/about","search":"","hash":""},"timestamp":1784280179651,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/about","search":"","hash":""},"timestamp":1784280179651,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/contact","search":"","hash":""},"timestamp":1784280180566,"hypothesisId":"H3-router"}
+{"sessionId":"2e520d","runId":"post-fix","location":"App.jsx:route","message":"Route location resolved","data":{"pathname":"/contact","search":"","hash":""},"timestamp":1784280180566,"hypothesisId":"H3-router"}

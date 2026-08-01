@@ -1,0 +1,155 @@
+.course-card {
+  background: #fff;
+  border: 2px solid #2F1769;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  &__image {
+    aspect-ratio: 1;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__body {
+    padding: 1rem;
+  }
+
+  &__title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  &__tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__author, &__dept {
+    font-size: 0.8rem;
+    color: #777;
+    margin: 0.15rem 0;
+  }
+
+  &__price {
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin: 0.5rem 0 0;
+  }
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  &--yellow {
+    background: #FCD12A;
+    color: #12082B;
+  }
+
+  &--blue {
+    background: #B3E0FF;
+    color: #12082B;
+  }
+}
+
+.course-card-wide {
+  flex: 0 0 320px;
+  display: flex;
+  background: #fff;
+  border: 2px solid #2F1769;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+
+  &__image {
+    flex: 0 0 140px;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__body {
+    flex: 1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h5 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+
+  &__students {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.5rem 0 0;
+  }
+}
+
+.course-card-recommend {
+  background: #fff;
+  border: 2px solid #2F1769;
+  border-radius: 12px;
+  overflow: hidden;
+
+  &__image {
+    aspect-ratio: 16/10;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__body {
+    padding: 1rem;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    h5 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+  }
+
+  &__students {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.5rem 0 0;
+  }
+}

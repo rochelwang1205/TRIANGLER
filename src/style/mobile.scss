@@ -1,0 +1,400 @@
+.search-filter {
+  margin-bottom: 2rem;
+
+  &__box {
+    background: #fff;
+    border: 2px solid #2F1769;
+    border-radius: 12px;
+    overflow: hidden;
+
+    &--expanded {
+      border-radius: 12px 12px 12px 12px;
+    }
+  }
+
+  .search-bar {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    margin-bottom: 0;
+
+    input {
+      flex: 1;
+      padding: 0.85rem 1rem;
+      border: none;
+      border-radius: 0;
+      font-size: 1rem;
+      background: #fff;
+      min-width: 0;
+
+      &:focus {
+        outline: none;
+      }
+
+      &::placeholder {
+        color: #999;
+      }
+    }
+
+    &__filter {
+      background: #fff;
+      border: none;
+      border-left: 1px solid #D6D1E8;
+      padding: 0 0.85rem;
+      cursor: pointer;
+      color: #2F1769;
+      display: flex;
+      align-items: center;
+
+      &--active {
+        background: #E8E3F5;
+      }
+    }
+
+    &__btn {
+      background: #FCD12A;
+      color: #12082B;
+      border: none;
+      border-left: 2px solid #12082B;
+      border-radius: 0;
+      padding: 0 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      white-space: nowrap;
+
+      &:hover {
+        background: #f0c820;
+      }
+    }
+  }
+
+  &__dropdown {
+    padding: 1rem 1.25rem 1.25rem;
+    border-top: 1px solid #D6D1E8;
+    background: #F9F8FC;
+
+    h6 {
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+    }
+  }
+
+  &__hot-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    @media (max-width: 767px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__panel {
+    padding: 1.25rem 1.5rem 1.5rem;
+    border-top: 1px solid #D6D1E8;
+    background: #F9F8FC;
+  }
+
+  &__panel-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  &__group {
+    margin-bottom: 1.25rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    h6 {
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+}
+
+.hot-tag {
+  background: #fff;
+  border: 1px solid #2F1769;
+  border-radius: 20px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #12082B;
+  text-align: left;
+
+  &:hover {
+    background: #F3F0F7;
+  }
+}
+
+.filter-tag {
+  background: #fff;
+  border: 1px solid #2F1769;
+  border-radius: 20px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  color: #12082B;
+
+  &--round {
+    border-radius: 8px;
+    min-width: 44px;
+    text-align: center;
+  }
+
+  &.active {
+    background: #D6D1E8;
+    border-color: #2F1769;
+    color: #12082B;
+  }
+
+  &:hover:not(.active) {
+    background: #F3F0F7;
+  }
+}
+
+.course-carousel {
+  position: relative;
+  padding: 0 2.5rem;
+
+  &__track {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    > * {
+      flex: 0 0 320px;
+    }
+  }
+
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: 2px solid #2F1769;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    color: #2F1769;
+
+    &--left { left: 0; }
+    &--right { right: 0; }
+
+    @media (max-width: 576px) {
+      display: none;
+    }
+  }
+}
+
+.course-card-row {
+  display: flex;
+  gap: 1rem;
+  background: #fff;
+  border: 2px solid #2F1769;
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  &__image {
+    flex: 0 0 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h5 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+  }
+
+  &__tags {
+    display: flex;
+    gap: 0.35rem;
+    margin-bottom: 0.35rem;
+  }
+
+  &__price {
+    font-weight: 800;
+    margin: 0;
+  }
+}
+
+.course-list-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .course-grid--desktop {
+    display: none !important;
+  }
+
+  .course-list-mobile {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .course-grid--desktop {
+    display: grid;
+  }
+
+  .course-list-mobile {
+    display: none;
+  }
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: #F9F8FC;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &__close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #12082B;
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+
+    a, button {
+      background: none;
+      border: none;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #12082B;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+}
+
+.navbar-icons {
+  &__cart {
+    position: relative;
+    color: inherit;
+    display: flex;
+    align-items: center;
+  }
+
+  &__badge {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background: #FCD12A;
+    color: #12082B;
+    font-size: 0.65rem;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.about-section__deco {
+  text-align: center;
+  color: #2F1769;
+  font-size: 1.5rem;
+  opacity: 0.4;
+  line-height: 1;
+
+  &--top { margin-bottom: 0.5rem; }
+  &--bottom { margin-top: 0.5rem; }
+}
+
+.review-card {
+  &__name {
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  &__headline {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.35rem;
+  }
+}
+
+.course-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.course-card-wide,
+.course-card-recommend {
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+}

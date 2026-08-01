@@ -1,0 +1,90 @@
+@import './style/nav.scss';
+@import './style/footer.scss';
+@import './style/button.scss';
+@import './style/home.scss';
+@import './style/explore.scss';
+@import './style/faq.scss';
+@import './style/recommend.scss';
+@import './style/modal.scss';
+@import './style/components.scss';
+@import './style/cart.scss';
+@import './style/course-detail.scss';
+@import './style/profile.scss';
+@import './style/mobile.scss';
+
+@import 'bootstrap/scss/bootstrap';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #12082B;
+  margin: 0;
+}
+
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.error-boundary {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  padding: 3rem 0;
+
+  &__message {
+    margin-bottom: 1.5rem;
+    color: #666;
+  }
+}
+
+.App > .container,
+.App > main,
+.App > .home-page,
+.App > .explore-page,
+.App > .faq-page,
+.App > .about-page,
+.App > .contact-page,
+.App > .profile-page,
+.App > .recommend-page {
+  flex: 1;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.section-title {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #12082B;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2.5rem;
+  padding-top: 2rem;
+  color: #12082B;
+}
+
+.more-link {
+  text-align: center;
+  margin-top: 2rem;
+  a {
+    text-decoration: underline;
+    color: #12082B;
+    font-weight: 500;
+  }
+}

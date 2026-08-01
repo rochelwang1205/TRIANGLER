@@ -1,0 +1,969 @@
+openapi: 3.0.3
+info:
+  title: Triangle Light API
+  description: |
+    Triangle 線上英文學習平台的 RESTful API 文件。
+
+    本文件對應前端功能：
+    - 首頁：熱門課程、檢定英文、生活英文、學員好評
+    - 尋找課程：主題篩選、搜尋、排序
+    - 客製化推薦：六題測驗問卷與推薦結果
+    - FAQ：常見問題分類
+    - 會員：登入、註冊、重設密碼
+
+    Mock Server 使用 json-server，預設位址：`http://localhost:3001`
+  version: 1.0.0
+  contact:
+    name: Triangle Support
+    email: support@triangle.com
+
+servers:
+  - url: http://localhost:3001/api
+    description: 本機 json-server Mock API
+
+tags:
+  - name: Auth
+    description: 會員驗證
+  - name: Courses
+    description: 課程
+  - name: Cart
+    description: 購物車
+  - name: Profile
+    description: 會員中心
+  - name: Purchase
+    description: 結帳與訂單
+  - name: Favorites
+    description: 收藏課程
+  - name: FAQ
+    description: 常見問題
+  - name: Recommend
+    description: 客製化課程推薦
+  - name: Testimonials
+    description: 學員好評
+  - name: Themes
+    description: 課程主題
+
+paths:
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: 會員登入
+      description: 使用帳號與密碼登入，成功後回傳 JWT Token（Mock）。
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            example:
+              account: demo_user
+              password: TriangleDemo2026
+      responses:
+        '200':
+          description: 登入成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: 帳號或密碼錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: 會員註冊
+      description: 建立新會員帳號。
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            example:
+              account: new_user
+              password: TriangleDemo2026
+              confirmPassword: TriangleDemo2026
+      responses:
+        '201':
+          description: 註冊成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '409':
+          description: 帳號已存在
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: 重設密碼
+      description: 更新會員密碼。
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+      responses:
+        '200':
+          description: 密碼重設成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: 密碼重設成功
+        '404':
+          description: 找不到使用者
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /courses:
+    get:
+      tags: [Courses]
+      summary: 取得課程列表
+      description: |
+        取得所有課程，支援 json-server 查詢語法篩選。
+
+        常用查詢參數：
+        - `tag`：主題標籤（生活、檢定、商務、旅遊、學術）
+        - `dept`：部門分類（生活英文、檢定英文…）
+        - `level`：程度（A1~C2）
+        - `isHot=true`：僅熱門課程
+        - `q`：搜尋課程名稱或講師
+        - `_sort` / `_order`：排序欄位與方向（asc / desc）
+      operationId: getCourses
+      parameters:
+        - name: tag
+          in: query
+          schema:
+            type: string
+            enum: [生活, 檢定, 商務, 旅遊, 學術]
+          description: 依主題標籤篩選
+        - name: dept
+          in: query
+          schema:
+            type: string
+          description: 依部門分類篩選
+        - name: level
+          in: query
+          schema:
+            type: string
+            enum: [A1, A2, B1, B2, C1, C2]
+          description: 依程度篩選
+        - name: isHot
+          in: query
+          schema:
+            type: boolean
+          description: 是否為熱門課程
+        - name: q
+          in: query
+          schema:
+            type: string
+          description: 搜尋課程名稱或講師
+        - name: _sort
+          in: query
+          schema:
+            type: string
+            enum: [price, students, createdAt]
+          description: 排序欄位
+        - name: _order
+          in: query
+          schema:
+            type: string
+            enum: [asc, desc]
+          description: 排序方向
+        - name: _page
+          in: query
+          schema:
+            type: integer
+            default: 1
+          description: 頁碼
+        - name: _limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+          description: 每頁筆數
+      responses:
+        '200':
+          description: 課程列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+
+  /courses/{id}:
+    get:
+      tags: [Courses]
+      summary: 取得單一課程（含詳情）
+      description: 回傳課程基本資料與詳情（介紹、單元、評價）。
+      operationId: getCourseById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 課程詳情
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetail'
+        '404':
+          description: 找不到課程
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /cart:
+    get:
+      tags: [Cart]
+      summary: 取得購物車
+      operationId: getCart
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 購物車內容
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+    post:
+      tags: [Cart]
+      summary: 加入購物車
+      operationId: addToCart
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [courseId]
+              properties:
+                courseId:
+                  type: integer
+      responses:
+        '200':
+          description: 更新後的購物車
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+    delete:
+      tags: [Cart]
+      summary: 清空購物車
+      operationId: clearCart
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 已清空
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+
+  /cart/{courseId}:
+    delete:
+      tags: [Cart]
+      summary: 移除購物車項目
+      operationId: removeFromCart
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 更新後的購物車
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+
+  /profile:
+    get:
+      tags: [Profile]
+      summary: 取得會員資料
+      operationId: getProfile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 會員資料
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileResponse'
+        '401':
+          description: 未登入
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /likeGoods:
+    post:
+      tags: [Favorites]
+      summary: 收藏課程
+      operationId: addLikeGoods
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [courseId]
+              properties:
+                courseId:
+                  type: integer
+      responses:
+        '201':
+          description: 收藏成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedCoursesResponse'
+
+  /likeGoods/{courseId}:
+    delete:
+      tags: [Favorites]
+      summary: 取消收藏
+      operationId: removeLikeGoods
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 更新後的收藏列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SavedCoursesResponse'
+
+  /purchase:
+    post:
+      tags: [Purchase]
+      summary: 結帳付款
+      description: 將購物車課程轉為訂單，並加入我的課程。
+      operationId: purchase
+      security:
+        - bearerAuth: []
+      responses:
+        '201':
+          description: 結帳成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseResponse'
+
+  /purchaseHistory:
+    get:
+      tags: [Purchase]
+      summary: 取得訂單紀錄
+      operationId: getPurchaseHistory
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: 訂單列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+  /purchaseHistory/{id}:
+    get:
+      tags: [Purchase]
+      summary: 取得單筆訂單
+      operationId: getPurchaseOne
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 訂單詳情
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+    patch:
+      tags: [Purchase]
+      summary: 更新訂單狀態
+      operationId: updatePurchaseStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [pending, completed, cancelled, refunded]
+      responses:
+        '200':
+          description: 更新後的訂單
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /faqCategories:
+    get:
+      tags: [FAQ]
+      summary: 取得 FAQ 分類列表
+      description: 回傳所有 FAQ 分類及其問答項目。
+      operationId: getFaqCategories
+      responses:
+        '200':
+          description: FAQ 分類列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FaqCategory'
+
+  /faqCategories/{id}:
+    get:
+      tags: [FAQ]
+      summary: 取得單一 FAQ 分類
+      operationId: getFaqCategoryById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: FAQ 分類詳情
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaqCategory'
+        '404':
+          description: 找不到分類
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /quizQuestions:
+    get:
+      tags: [Recommend]
+      summary: 取得推薦測驗題目
+      description: 回傳客製化推薦流程的六題問卷。
+      operationId: getQuizQuestions
+      responses:
+        '200':
+          description: 測驗題目列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuizQuestion'
+
+  /recommend:
+    post:
+      tags: [Recommend]
+      summary: 提交測驗並取得推薦課程
+      description: 送出六題測驗答案，回傳個人化推薦課程列表。
+      operationId: submitRecommend
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendRequest'
+            example:
+              answers:
+                - questionId: 1
+                  selectedIndex: 2
+                - questionId: 2
+                  selectedIndex: 1
+                - questionId: 3
+                  selectedIndex: 3
+                - questionId: 4
+                  selectedIndex: 4
+                - questionId: 5
+                  selectedIndex: 0
+                - questionId: 6
+                  selectedIndex: 2
+      responses:
+        '200':
+          description: 推薦課程列表
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecommendResponse'
+
+  /testimonials:
+    get:
+      tags: [Testimonials]
+      summary: 取得學員好評
+      operationId: getTestimonials
+      responses:
+        '200':
+          description: 學員好評列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Testimonial'
+
+  /themes:
+    get:
+      tags: [Themes]
+      summary: 取得課程主題列表
+      description: 回傳「尋找課程」頁面的主題篩選選項。
+      operationId: getThemes
+      responses:
+        '200':
+          description: 主題列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Theme'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      type: object
+      required: [account, password]
+      properties:
+        account:
+          type: string
+          example: demo_user
+        password:
+          type: string
+          format: password
+          example: TriangleDemo2026
+
+    RegisterRequest:
+      type: object
+      required: [account, password, confirmPassword]
+      properties:
+        account:
+          type: string
+        password:
+          type: string
+          format: password
+        confirmPassword:
+          type: string
+          format: password
+
+    ResetPasswordRequest:
+      type: object
+      required: [account, password, confirmPassword]
+      properties:
+        account:
+          type: string
+        password:
+          type: string
+          format: password
+        confirmPassword:
+          type: string
+          format: password
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: mock-jwt-token-abc123
+        user:
+          $ref: '#/components/schemas/User'
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        account:
+          type: string
+        name:
+          type: string
+
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          example: IELTS 7分衝刺班
+        image:
+          type: string
+          description: 課程封面圖片 URL
+        tag:
+          type: string
+          example: 檢定
+        level:
+          type: string
+          example: C1
+        author:
+          type: string
+          example: Sarah Chen
+        dept:
+          type: string
+          example: 檢定英文
+        price:
+          type: integer
+          example: 5500
+        students:
+          type: integer
+          example: 200
+        isHot:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+
+    CourseDetail:
+      allOf:
+        - $ref: '#/components/schemas/Course'
+        - type: object
+          properties:
+            description:
+              type: array
+              items:
+                type: string
+            chapters:
+              type: string
+            duration:
+              type: string
+            units:
+              type: array
+              items:
+                $ref: '#/components/schemas/CourseUnit'
+            reviews:
+              type: array
+              items:
+                $ref: '#/components/schemas/CourseReview'
+
+    CourseUnit:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        items:
+          type: array
+          items:
+            type: string
+
+    CourseReview:
+      type: object
+      properties:
+        name:
+          type: string
+        title:
+          type: string
+        rating:
+          type: integer
+        text:
+          type: string
+
+    CartResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+
+    CartItem:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        price:
+          type: integer
+
+    ProfileResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        email:
+          type: string
+        avatar:
+          type: string
+          nullable: true
+        achievements:
+          type: array
+          items:
+            $ref: '#/components/schemas/Achievement'
+        myCourses:
+          type: array
+          items:
+            $ref: '#/components/schemas/MyCourse'
+        savedCourses:
+          type: array
+          items:
+            $ref: '#/components/schemas/SavedCourse'
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderSummary'
+
+    Achievement:
+      type: object
+      properties:
+        id:
+          type: integer
+        label:
+          type: string
+        value:
+          type: string
+
+    MyCourse:
+      type: object
+      properties:
+        courseId:
+          type: integer
+        title:
+          type: string
+        image:
+          type: string
+        progress:
+          type: integer
+        lastStudy:
+          type: string
+
+    SavedCourse:
+      type: object
+      properties:
+        courseId:
+          type: integer
+        title:
+          type: string
+        image:
+          type: string
+        tag:
+          type: string
+        level:
+          type: string
+
+    SavedCoursesResponse:
+      type: object
+      properties:
+        savedCourses:
+          type: array
+          items:
+            $ref: '#/components/schemas/SavedCourse'
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: integer
+        courseId:
+          type: integer
+        title:
+          type: string
+        price:
+          type: integer
+        status:
+          type: string
+          enum: [pending, completed, cancelled, refunded]
+        date:
+          type: string
+          format: date
+
+    OrderSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+        title:
+          type: string
+        price:
+          type: integer
+        status:
+          type: string
+
+    PurchaseResponse:
+      type: object
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+
+    FaqCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          example: common
+        title:
+          type: string
+          example: 常見問題
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/FaqItem'
+
+    FaqItem:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: array
+          items:
+            type: string
+
+    QuizQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          example: Q1. 我的年齡
+        options:
+          type: array
+          items:
+            type: string
+
+    RecommendRequest:
+      type: object
+      required: [answers]
+      properties:
+        answers:
+          type: array
+          items:
+            type: object
+            required: [questionId, selectedIndex]
+            properties:
+              questionId:
+                type: integer
+              selectedIndex:
+                type: integer
+                minimum: 0
+                maximum: 4
+
+    RecommendResponse:
+      type: object
+      properties:
+        courses:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendCourse'
+
+    RecommendCourse:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        image:
+          type: string
+        students:
+          type: integer
+
+    Testimonial:
+      type: object
+      properties:
+        id:
+          type: integer
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        text:
+          type: string
+
+    Theme:
+      type: object
+      properties:
+        id:
+          type: string
+          example: business
+        label:
+          type: string
+          example: 商務
+        icon:
+          type: string
+          nullable: true
+          description: 主題 icon 識別碼
+
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: 發生錯誤
