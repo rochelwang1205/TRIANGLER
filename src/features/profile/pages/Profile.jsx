@@ -1,22 +1,25 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { MdOutlineSettings, MdNotificationsNone } from 'react-icons/md';
 import { resolveCourseImage } from '@/features/courses/utils/courseImages';
 import { useProfile } from '@/features/profile/api/useProfile';
 import { useAuth } from '@/features/auth/context/AuthContext';
+import { getDashboardPath } from '@/features/auth/constants/roles';
 import AuthLoginModal from '@/features/auth/components/AuthLoginModal';
+import AccountHeader from '@/components/AccountHeader';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, logout, role, isStudent } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
   const { data: profile, error, isPending } = useProfile({ enabled: isLoggedIn });
 
   useEffect(() => {
     if (!isLoggedIn) {
       setShowLogin(true);
+    } else if (!isStudent) {
+      navigate(getDashboardPath(role), { replace: true });
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, isStudent, role, navigate]);
 
   const handleLogout = () => {
     logout();
@@ -60,20 +63,12 @@ export default function Profile() {
       <div className="container">
         <h1 className="page-title">我的帳戶</h1>
 
-        <section className="profile-header">
-          <div className="profile-header__avatar">
-            {profile.user.name.charAt(0).toUpperCase()}
-          </div>
-          <div className="profile-header__info">
-            <h2>{profile.user.name}</h2>
-            <p>{profile.email}</p>
-          </div>
-          <div className="profile-header__actions">
-            <button type="button" aria-label="設定"><MdOutlineSettings size={22} /></button>
-            <button type="button" aria-label="通知"><MdNotificationsNone size={22} /></button>
-            <button type="button" className="btn-outline btn-outline--sm" onClick={handleLogout}>登出</button>
-          </div>
-        </section>
+        <AccountHeader
+          name={profile.user.name}
+          email={profile.email}
+          role={profile.user.role ?? 'student'}
+          onLogout={handleLogout}
+        />
 
         <section className="profile-section">
           <div className="profile-section__head">

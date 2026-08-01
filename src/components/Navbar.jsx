@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { RiShoppingBag4Line } from 'react-icons/ri';
 import { MdOutlineAccountCircle, MdMenu } from 'react-icons/md';
 import MobileMenu from './MobileMenu';
@@ -12,18 +12,21 @@ import {
 } from '@/features/auth/components/Login';
 import { useCart } from '@/features/cart/context/CartContext';
 import { useAuth } from '@/features/auth/context/AuthContext';
+import { getDashboardPath } from '@/features/auth/constants/roles';
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [modal, setModal] = useState(null);
   const [resetAccount, setResetAccount] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
   const { count } = useCart();
-  const { user, login, logout } = useAuth();
+  const { user, login, logout, role } = useAuth();
 
   const closeModal = () => setModal(null);
 
   const handleAuthSuccess = (loggedInUser) => {
     login(loggedInUser, localStorage.getItem('token'));
+    navigate(getDashboardPath(loggedInUser.role ?? 'student'));
   };
 
   const handleLogout = () => {
@@ -60,7 +63,7 @@ export default function Navbar() {
               {count > 0 && <span className="navbar-icons__badge">{count}</span>}
             </Link>
             {user ? (
-              <Link to="/profile" aria-label="我的帳戶" title={user.name}>
+              <Link to={getDashboardPath(role)} aria-label="我的帳戶" title={user.name}>
                 <MdOutlineAccountCircle size={24} />
               </Link>
             ) : (

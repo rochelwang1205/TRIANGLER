@@ -61,3 +61,33 @@
     gap: 0.35rem;
   }
 }
+
+.btn-primary {
+  display: inline-block;
+  background: #2F1769;
+  color: #fff;
+  border: 2px solid #2F1769;
+  border-radius: 8px;
+  padding: 0.6rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover {
+    background: #1f0f4a;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}

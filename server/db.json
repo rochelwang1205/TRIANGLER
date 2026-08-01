@@ -4,19 +4,36 @@
       "id": 1,
       "account": "demo_user",
       "password": "TriangleDemo2026",
-      "name": "Demo User"
+      "name": "Demo User",
+      "role": "student"
     },
     {
       "id": 2,
       "account": "test_user",
       "password": "test1234",
-      "name": "Test User"
+      "name": "Test User",
+      "role": "student"
     },
     {
       "id": 3,
       "account": "test_1785568995318",
       "password": "TriangleDemo2026",
-      "name": "test_1785568995318"
+      "name": "test_1785568995318",
+      "role": "student"
+    },
+    {
+      "id": 4,
+      "account": "teacher_sarah",
+      "password": "TriangleDemo2026",
+      "name": "Sarah Chen",
+      "role": "teacher"
+    },
+    {
+      "id": 5,
+      "account": "admin",
+      "password": "TriangleDemo2026",
+      "name": "李某某",
+      "role": "admin"
     }
   ],
   "courses": [
@@ -32,7 +49,9 @@
       "students": 105,
       "isHot": true,
       "createdAt": "2025-06-01T00:00:00.000Z",
-      "courseType": "影音課"
+      "courseType": "影音課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 2,
@@ -46,7 +65,9 @@
       "students": 200,
       "isHot": true,
       "createdAt": "2025-05-15T00:00:00.000Z",
-      "courseType": "直播課"
+      "courseType": "直播課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 3,
@@ -60,7 +81,9 @@
       "students": 90,
       "isHot": true,
       "createdAt": "2025-04-20T00:00:00.000Z",
-      "courseType": "演講"
+      "courseType": "演講",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 4,
@@ -74,7 +97,9 @@
       "students": 103,
       "isHot": true,
       "createdAt": "2025-03-10T00:00:00.000Z",
-      "courseType": "說明會"
+      "courseType": "說明會",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 5,
@@ -88,7 +113,9 @@
       "students": 180,
       "isHot": false,
       "createdAt": "2025-06-10T00:00:00.000Z",
-      "courseType": "影音課"
+      "courseType": "影音課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 6,
@@ -102,7 +129,9 @@
       "students": 250,
       "isHot": false,
       "createdAt": "2025-05-20T00:00:00.000Z",
-      "courseType": "直播課"
+      "courseType": "直播課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 7,
@@ -116,7 +145,9 @@
       "students": 120,
       "isHot": false,
       "createdAt": "2025-04-01T00:00:00.000Z",
-      "courseType": "演講"
+      "courseType": "演講",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 8,
@@ -130,7 +161,9 @@
       "students": 95,
       "isHot": false,
       "createdAt": "2025-03-25T00:00:00.000Z",
-      "courseType": "說明會"
+      "courseType": "說明會",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 9,
@@ -144,7 +177,9 @@
       "students": 310,
       "isHot": false,
       "createdAt": "2025-02-14T00:00:00.000Z",
-      "courseType": "影音課"
+      "courseType": "影音課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 10,
@@ -158,7 +193,9 @@
       "students": 88,
       "isHot": false,
       "createdAt": "2025-01-30T00:00:00.000Z",
-      "courseType": "直播課"
+      "courseType": "直播課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 11,
@@ -172,7 +209,9 @@
       "students": 103,
       "isHot": false,
       "createdAt": "2025-06-05T00:00:00.000Z",
-      "courseType": "演講"
+      "courseType": "演講",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 12,
@@ -186,7 +225,9 @@
       "students": 520,
       "isHot": false,
       "createdAt": "2025-05-01T00:00:00.000Z",
-      "courseType": "說明會"
+      "courseType": "說明會",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 13,
@@ -200,7 +241,9 @@
       "students": 210,
       "isHot": false,
       "createdAt": "2025-04-15T00:00:00.000Z",
-      "courseType": "影音課"
+      "courseType": "影音課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 14,
@@ -214,7 +257,9 @@
       "students": 175,
       "isHot": false,
       "createdAt": "2025-03-20T00:00:00.000Z",
-      "courseType": "直播課"
+      "courseType": "直播課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 15,
@@ -228,7 +273,9 @@
       "students": 140,
       "isHot": false,
       "createdAt": "2025-02-28T00:00:00.000Z",
-      "courseType": "演講"
+      "courseType": "演講",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 16,
@@ -242,7 +289,9 @@
       "students": 98,
       "isHot": false,
       "createdAt": "2025-01-15T00:00:00.000Z",
-      "courseType": "說明會"
+      "courseType": "說明會",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 17,
@@ -256,7 +305,9 @@
       "students": 160,
       "isHot": false,
       "createdAt": "2025-06-08T00:00:00.000Z",
-      "courseType": "影音課"
+      "courseType": "影音課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 18,
@@ -270,7 +321,9 @@
       "students": 75,
       "isHot": false,
       "createdAt": "2025-05-18T00:00:00.000Z",
-      "courseType": "直播課"
+      "courseType": "直播課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 19,
@@ -284,7 +337,9 @@
       "students": 110,
       "isHot": false,
       "createdAt": "2025-04-05T00:00:00.000Z",
-      "courseType": "演講"
+      "courseType": "演講",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 20,
@@ -298,7 +353,9 @@
       "students": 130,
       "isHot": false,
       "createdAt": "2025-03-12T00:00:00.000Z",
-      "courseType": "說明會"
+      "courseType": "說明會",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 21,
@@ -312,7 +369,9 @@
       "students": 195,
       "isHot": false,
       "createdAt": "2025-02-20T00:00:00.000Z",
-      "courseType": "影音課"
+      "courseType": "影音課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 22,
@@ -326,7 +385,9 @@
       "students": 280,
       "isHot": false,
       "createdAt": "2025-06-02T00:00:00.000Z",
-      "courseType": "直播課"
+      "courseType": "直播課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 23,
@@ -340,7 +401,9 @@
       "students": 450,
       "isHot": false,
       "createdAt": "2025-05-10T00:00:00.000Z",
-      "courseType": "演講"
+      "courseType": "演講",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 24,
@@ -354,7 +417,9 @@
       "students": 165,
       "isHot": false,
       "createdAt": "2025-04-22T00:00:00.000Z",
-      "courseType": "說明會"
+      "courseType": "說明會",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 25,
@@ -368,7 +433,9 @@
       "students": 220,
       "isHot": false,
       "createdAt": "2025-03-08T00:00:00.000Z",
-      "courseType": "影音課"
+      "courseType": "影音課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 26,
@@ -382,7 +449,9 @@
       "students": 190,
       "isHot": false,
       "createdAt": "2025-02-05T00:00:00.000Z",
-      "courseType": "直播課"
+      "courseType": "直播課",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 27,
@@ -396,7 +465,9 @@
       "students": 60,
       "isHot": false,
       "createdAt": "2025-06-12T00:00:00.000Z",
-      "courseType": "演講"
+      "courseType": "演講",
+      "teacherId": 4,
+      "status": "published"
     },
     {
       "id": 28,
@@ -410,7 +481,41 @@
       "students": 45,
       "isHot": false,
       "createdAt": "2025-05-25T00:00:00.000Z",
-      "courseType": "說明會"
+      "courseType": "說明會",
+      "teacherId": 4,
+      "status": "published"
+    },
+    {
+      "id": 29,
+      "title": "商務簡報英語（草稿）",
+      "image": "/images/courses/hot-1.png",
+      "tag": "商務",
+      "level": "B2",
+      "author": "Sarah Chen",
+      "dept": "商務英文",
+      "price": 4200,
+      "students": 0,
+      "isHot": false,
+      "createdAt": "2026-08-01T08:53:24.006Z",
+      "courseType": "影音課",
+      "teacherId": 4,
+      "status": "draft"
+    },
+    {
+      "id": 30,
+      "title": "面試英語實戰班",
+      "image": "/images/courses/hot-2.png",
+      "tag": "商務",
+      "level": "B1",
+      "author": "Sarah Chen",
+      "dept": "商務英文",
+      "price": 3800,
+      "students": 0,
+      "isHot": false,
+      "createdAt": "2026-08-01T08:53:24.006Z",
+      "courseType": "直播課",
+      "teacherId": 4,
+      "status": "pending_review"
     }
   ],
   "faqCategories": [
@@ -794,6 +899,22 @@
           "value": "0 門"
         }
       ],
+      "myCourses": [],
+      "savedCourses": []
+    },
+    {
+      "userId": 4,
+      "email": "teacher_sarah@triangle.com",
+      "avatar": null,
+      "achievements": [],
+      "myCourses": [],
+      "savedCourses": []
+    },
+    {
+      "userId": 5,
+      "email": "admin@triangle.com",
+      "avatar": null,
+      "achievements": [],
       "myCourses": [],
       "savedCourses": []
     }
@@ -2374,6 +2495,118 @@
           "text": "模擬考部分幫助很大，成績有明顯提升。"
         }
       ]
+    },
+    {
+      "courseId": 29,
+      "description": [
+        "《商務簡報英語（草稿）》由 Sarah Chen 主講，適合 B2 程度學員，聚焦商務英文實戰應用。",
+        "課程採循序漸進設計，結合理論講解、例題演練與課後作業，幫助你在有限時間內建立完整能力。",
+        "完成課程後可獲得個人化學習進度追蹤與複習提醒，有效提升學習效率。"
+      ],
+      "chapters": "4 個單元 共 14 個章節, 5 項作業",
+      "duration": "14 小時 43 分鐘",
+      "units": [
+        {
+          "id": 1,
+          "title": "單元 1 商務溝通基礎",
+          "items": [
+            "1.1 會議英文",
+            "1.2 商務書信",
+            "作業 1 簡報練習"
+          ]
+        },
+        {
+          "id": 2,
+          "title": "單元 2 簡報與談判"
+        },
+        {
+          "id": 3,
+          "title": "單元 3 跨文化溝通"
+        },
+        {
+          "id": 4,
+          "title": "單元 4 實務案例"
+        }
+      ],
+      "reviews": [
+        {
+          "name": "jasmine Hung",
+          "title": "迅速的學習效果",
+          "rating": 5,
+          "text": "課程節奏很好，解題技巧非常實用！"
+        },
+        {
+          "name": "jason08",
+          "title": "清晰的課程架構",
+          "rating": 5,
+          "text": "每個單元都有明確目標，學起來很有方向。"
+        },
+        {
+          "name": "Amy Lin",
+          "title": "講師講解到位",
+          "rating": 5,
+          "text": "複雜的題型講解得很清楚。"
+        }
+      ]
+    },
+    {
+      "courseId": 30,
+      "description": [
+        "《面試英語實戰班》由 Sarah Chen 主講，適合 B1 程度學員，聚焦商務英文實戰應用。",
+        "課程採循序漸進設計，結合理論講解、例題演練與課後作業，幫助你在有限時間內建立完整能力。",
+        "完成課程後可獲得個人化學習進度追蹤與複習提醒，有效提升學習效率。"
+      ],
+      "chapters": "4 個單元 共 14 個章節, 5 項作業",
+      "duration": "15 小時 44 分鐘",
+      "units": [
+        {
+          "id": 1,
+          "title": "單元 1 商務溝通基礎",
+          "items": [
+            "1.1 會議英文",
+            "1.2 商務書信",
+            "作業 1 簡報練習"
+          ]
+        },
+        {
+          "id": 2,
+          "title": "單元 2 簡報與談判"
+        },
+        {
+          "id": 3,
+          "title": "單元 3 跨文化溝通"
+        },
+        {
+          "id": 4,
+          "title": "單元 4 實務案例"
+        }
+      ],
+      "reviews": [
+        {
+          "name": "jasmine Hung",
+          "title": "迅速的學習效果",
+          "rating": 5,
+          "text": "課程節奏很好，解題技巧非常實用！"
+        },
+        {
+          "name": "jason08",
+          "title": "清晰的課程架構",
+          "rating": 5,
+          "text": "每個單元都有明確目標，學起來很有方向。"
+        },
+        {
+          "name": "Amy Lin",
+          "title": "講師講解到位",
+          "rating": 5,
+          "text": "複雜的題型講解得很清楚。"
+        },
+        {
+          "name": "Kevin Wu",
+          "title": "值得推薦",
+          "rating": 4,
+          "text": "模擬考部分幫助很大，成績有明顯提升。"
+        }
+      ]
     }
   ],
   "orders": [
@@ -2404,5 +2637,55 @@
       "status": "refunded",
       "date": "2026-08-01"
     }
-  ]
+  ],
+  "notifications": [
+    {
+      "id": 1,
+      "userId": 4,
+      "type": "course_review_result",
+      "title": "課程審核通知",
+      "message": "「面試英語實戰班」已提交審核，請等待管理員回覆。",
+      "read": false,
+      "createdAt": "2024-08-06T10:00:00"
+    },
+    {
+      "id": 2,
+      "userId": 5,
+      "type": "course_pending",
+      "title": "新課程待審核",
+      "message": "Sarah Chen 提交了「面試英語實戰班」待審核。",
+      "read": false,
+      "createdAt": "2024-08-06T10:05:00"
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "type": "system",
+      "title": "歡迎使用 Triangle",
+      "message": "開始探索適合你的英語課程吧！",
+      "read": true,
+      "createdAt": "2024-08-01T09:00:00"
+    }
+  ],
+  "ads": [
+    {
+      "id": 1,
+      "title": "夏季優惠",
+      "image": "/images/courses/hot-1.png",
+      "link": "/explore",
+      "active": true,
+      "sortOrder": 1
+    },
+    {
+      "id": 2,
+      "title": "IELTS 衝刺班",
+      "image": "/images/courses/hot-2.png",
+      "link": "/course/5",
+      "active": true,
+      "sortOrder": 2
+    }
+  ],
+  "platformStats": {
+    "totalVisits": 948
+  }
 }

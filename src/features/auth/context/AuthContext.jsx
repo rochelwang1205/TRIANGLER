@@ -1,5 +1,6 @@
 import { createContext, useContext, useMemo, useState, useCallback } from 'react';
 import { getStoredUser } from '../utils/auth';
+import { ROLES } from '../constants/roles';
 
 const AuthContext = createContext(null);
 
@@ -18,14 +19,20 @@ export function AuthProvider({ children }) {
     setUser(null);
   }, []);
 
+  const role = user?.role ?? ROLES.STUDENT;
+
   const value = useMemo(
     () => ({
       user,
+      role,
       isLoggedIn: Boolean(user),
+      isStudent: role === ROLES.STUDENT,
+      isTeacher: role === ROLES.TEACHER,
+      isAdmin: role === ROLES.ADMIN,
       login,
       logout,
     }),
-    [user, login, logout]
+    [user, role, login, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

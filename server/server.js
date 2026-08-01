@@ -11,6 +11,9 @@ import {
   generateOrderId,
   mergeCourseWithDetail,
   buildProfileResponse,
+  computeAdminStats,
+  createNotification,
+  buildDefaultCourseDetail,
 } from './helpers.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -45,6 +48,26 @@ function requireAuth(req, res) {
     return null;
   }
   return userId;
+}
+
+function getUser(req) {
+  const userId = getUserIdFromToken(req);
+  if (!userId) return null;
+  return db.get('users').find({ id: userId }).value();
+}
+
+function requireRole(req, res, roles) {
+  const user = getUser(req);
+  if (!user) {
+    res.status(401).json({ message: '請先登入' });
+    return null;
+  }
+  const role = user.role ?? 'student';
+  if (!roles.includes(role)) {
+    res.status(403).json({ message: '權限不足' });
+    return null;
+  }
+  return user;
 }
 
 function getCartKey(req) {
@@ -126,7 +149,12 @@ app.post('/api/auth/login', (req, res) => {
   getUserProfile(user.id);
   res.json({
     token: `mock-jwt-token-${user.id}`,
-    user: { id: user.id, account: user.account, name: user.name },
+    user: {
+      id: user.id,
+      account: user.account,
+      name: user.name,
+      role: user.role ?? 'student',
+    },
   });
 });
 
@@ -149,6 +177,7 @@ app.post('/api/auth/register', (req, res) => {
     account,
     password,
     name: account,
+    role: 'student',
   };
 
   db.get('users').push(newUser).write();
@@ -156,7 +185,12 @@ app.post('/api/auth/register', (req, res) => {
 
   res.status(201).json({
     token: `mock-jwt-token-${newUser.id}`,
-    user: { id: newUser.id, account: newUser.account, name: newUser.name },
+    user: {
+      id: newUser.id,
+      account: newUser.account,
+      name: newUser.name,
+      role: newUser.role,
+    },
   });
 });
 
@@ -374,26 +408,351 @@ app.get('/api/courses/:id', (req, res) => {
   if (!course) {
     return res.status(404).json({ message: '找不到課程' });
   }
+  const user = getUser(req);
+  const isOwner = user?.role === 'teacher' && course.teacherId === user.id;
+  const isAdmin = user?.role === 'admin';
+  if (course.status !== 'published' && !isOwner && !isAdmin) {
+    return res.status(404).json({ message: '找不到課程' });
+  }
 
   const detail = db.get('courseDetails').find({ courseId: id }).value();
   res.json(mergeCourseWithDetail(course, detail));
 });
 
-app.get('/api/courses', (req, res, next) => {
-  const { q } = req.query;
+app.get('/api/courses', (req, res) => {
+  const { q, status } = req.query;
+  let courses = db.get('courses').value();
+  const user = getUser(req);
+
+  if (status) {
+    if (user?.role !== 'teacher' && user?.role !== 'admin') {
+      return res.status(403).json({ message: '權限不足' });
+    }
+    courses = courses.filter((c) => c.status === status);
+    if (user?.role === 'teacher') {
+      courses = courses.filter((c) => c.teacherId === user.id);
+    }
+  } else {
+    courses = courses.filter((c) => c.status === 'published');
+  }
+
   if (q) {
     const keyword = String(q).toLowerCase();
-    const courses = db
-      .get('courses')
-      .filter(
-        (course) =>
-          course.title.toLowerCase().includes(keyword) ||
-          course.author.toLowerCase().includes(keyword)
-      )
-      .value();
-    return res.json(courses);
+    courses = courses.filter(
+      (course) =>
+        course.title.toLowerCase().includes(keyword) ||
+        course.author.toLowerCase().includes(keyword)
+    );
   }
-  next();
+  res.json(courses);
+});
+
+// --- Notifications ---
+app.get('/api/notifications', (req, res) => {
+  const userId = requireAuth(req, res);
+  if (!userId) return;
+  const items = db.get('notifications').filter({ userId }).value() ?? [];
+  res.json(items.sort((a, b) => b.id - a.id));
+});
+
+app.patch('/api/notifications/:id/read', (req, res) => {
+  const userId = requireAuth(req, res);
+  if (!userId) return;
+  const notification = db
+    .get('notifications')
+    .find({ id: Number(req.params.id), userId })
+    .value();
+  if (!notification) return res.status(404).json({ message: '找不到通知' });
+  db.get('notifications').find({ id: notification.id }).assign({ read: true }).write();
+  res.json({ ...notification, read: true });
+});
+
+app.patch('/api/notifications/read-all', (req, res) => {
+  const userId = requireAuth(req, res);
+  if (!userId) return;
+  const items = db.get('notifications').filter({ userId }).value() ?? [];
+  items.forEach((n) => {
+    db.get('notifications').find({ id: n.id }).assign({ read: true }).write();
+  });
+  res.json({ message: '已全部標為已讀' });
+});
+
+// --- Settings ---
+app.patch('/api/settings/profile', (req, res) => {
+  const userId = requireAuth(req, res);
+  if (!userId) return;
+  const { name, email } = req.body;
+  const user = db.get('users').find({ id: userId }).value();
+  const profile = getUserProfile(userId);
+  if (!user || !profile) return res.status(404).json({ message: '找不到使用者' });
+
+  if (name) db.get('users').find({ id: userId }).assign({ name }).write();
+  if (email) db.get('userProfiles').find({ userId }).assign({ email }).write();
+
+  const updatedUser = db.get('users').find({ id: userId }).value();
+  const updatedProfile = getUserProfile(userId);
+  res.json(buildProfileResponse(updatedUser, updatedProfile, getUserOrders(userId)));
+});
+
+app.patch('/api/settings/password', (req, res) => {
+  const userId = requireAuth(req, res);
+  if (!userId) return;
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    return res.status(400).json({ message: '請填寫完整資訊' });
+  }
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ message: '兩次密碼不一致' });
+  }
+  const user = db.get('users').find({ id: userId }).value();
+  if (user.password !== currentPassword) {
+    return res.status(401).json({ message: '目前密碼錯誤' });
+  }
+  db.get('users').find({ id: userId }).assign({ password: newPassword }).write();
+  res.json({ message: '密碼更新成功' });
+});
+
+// --- Teacher ---
+app.get('/api/teacher/courses', (req, res) => {
+  const user = requireRole(req, res, ['teacher']);
+  if (!user) return;
+  const courses = db.get('courses').filter({ teacherId: user.id }).value();
+  res.json(courses.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+});
+
+app.post('/api/teacher/courses', (req, res) => {
+  const user = requireRole(req, res, ['teacher']);
+  if (!user) return;
+  const { title, tag, level, dept, price, courseType, description } = req.body;
+  if (!title) return res.status(400).json({ message: '請提供課程標題' });
+
+  const courses = db.get('courses').value();
+  const newCourse = {
+    id: courses.length ? Math.max(...courses.map((c) => c.id)) + 1 : 1,
+    title,
+    image: '/images/courses/hot-1.png',
+    tag: tag || '生活',
+    level: level || 'A2',
+    author: user.name,
+    dept: dept || '生活英文',
+    price: Number(price) || 0,
+    students: 0,
+    isHot: false,
+    createdAt: new Date().toISOString(),
+    courseType: courseType || '影音課',
+    teacherId: user.id,
+    status: 'draft',
+    description: description || '',
+  };
+  db.get('courses').push(newCourse).write();
+  res.status(201).json(newCourse);
+});
+
+app.patch('/api/teacher/courses/:id', (req, res) => {
+  const user = requireRole(req, res, ['teacher']);
+  if (!user) return;
+  const course = db
+    .get('courses')
+    .find({ id: Number(req.params.id), teacherId: user.id })
+    .value();
+  if (!course) return res.status(404).json({ message: '找不到課程' });
+  if (course.status === 'published') {
+    return res.status(400).json({ message: '已上架課程無法直接編輯，請聯繫管理員' });
+  }
+
+  const allowed = ['title', 'tag', 'level', 'dept', 'price', 'courseType', 'description', 'image'];
+  const updates = {};
+  allowed.forEach((key) => {
+    if (req.body[key] !== undefined) updates[key] = req.body[key];
+  });
+  db.get('courses').find({ id: course.id }).assign(updates).write();
+  res.json({ ...course, ...updates });
+});
+
+app.post('/api/teacher/courses/:id/submit', (req, res) => {
+  const user = requireRole(req, res, ['teacher']);
+  if (!user) return;
+  const course = db
+    .get('courses')
+    .find({ id: Number(req.params.id), teacherId: user.id })
+    .value();
+  if (!course) return res.status(404).json({ message: '找不到課程' });
+  if (!['draft', 'rejected'].includes(course.status)) {
+    return res.status(400).json({ message: '此課程狀態無法提交審核' });
+  }
+
+  db.get('courses').find({ id: course.id }).assign({ status: 'pending_review' }).write();
+  const admins = db.get('users').filter({ role: 'admin' }).value();
+  admins.forEach((admin) => {
+    createNotification(db, {
+      userId: admin.id,
+      type: 'course_pending',
+      title: '新課程待審核',
+      message: `${user.name} 提交了「${course.title}」待審核。`,
+    });
+  });
+  res.json({ ...course, status: 'pending_review' });
+});
+
+app.get('/api/teacher/courses/:id/students', (req, res) => {
+  const user = requireRole(req, res, ['teacher']);
+  if (!user) return;
+  const course = db
+    .get('courses')
+    .find({ id: Number(req.params.id), teacherId: user.id })
+    .value();
+  if (!course) return res.status(404).json({ message: '找不到課程' });
+
+  const orders = db
+    .get('orders')
+    .filter({ courseId: course.id, status: 'completed' })
+    .value();
+  const students = orders.map((order) => {
+    const student = db.get('users').find({ id: order.userId }).value();
+    const profile = getUserProfile(order.userId);
+    const myCourse = profile?.myCourses?.find((c) => c.courseId === course.id);
+    return {
+      userId: order.userId,
+      name: student?.name ?? '未知',
+      email: profile?.email ?? '',
+      progress: myCourse?.progress ?? 0,
+      lastStudy: myCourse?.lastStudy ?? null,
+      purchasedAt: order.date,
+    };
+  });
+  res.json(students);
+});
+
+// --- Admin ---
+app.get('/api/admin/stats', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  const orders = db.get('orders').value();
+  const platformStats = db.get('platformStats').value() ?? {};
+  res.json(computeAdminStats(orders, platformStats));
+});
+
+app.get('/api/admin/courses', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  const { status } = req.query;
+  let courses = db.get('courses').value();
+  if (status) courses = courses.filter((c) => c.status === status);
+  res.json(courses.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+});
+
+app.patch('/api/admin/courses/:id/review', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  const { action, reason } = req.body;
+  if (!['approve', 'reject'].includes(action)) {
+    return res.status(400).json({ message: '無效的審核動作' });
+  }
+  const course = db.get('courses').find({ id: Number(req.params.id) }).value();
+  if (!course) return res.status(404).json({ message: '找不到課程' });
+  if (course.status !== 'pending_review') {
+    return res.status(400).json({ message: '此課程不在待審核狀態' });
+  }
+
+  const newStatus = action === 'approve' ? 'published' : 'rejected';
+  db.get('courses').find({ id: course.id }).assign({ status: newStatus }).write();
+
+  if (action === 'approve') {
+    const existingDetail = db.get('courseDetails').find({ courseId: course.id }).value();
+    if (!existingDetail) {
+      db.get('courseDetails').push(buildDefaultCourseDetail({ ...course, status: newStatus })).write();
+    }
+  }
+
+  createNotification(db, {
+    userId: course.teacherId,
+    type: 'course_review_result',
+    title: action === 'approve' ? '課程審核通過' : '課程審核未通過',
+    message:
+      action === 'approve'
+        ? `「${course.title}」已通過審核並上架。`
+        : `「${course.title}」未通過審核。${reason ? `原因：${reason}` : ''}`,
+  });
+  res.json({ ...course, status: newStatus });
+});
+
+app.get('/api/admin/orders', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  const orders = db.get('orders').value().sort((a, b) => b.date.localeCompare(a.date));
+  res.json(orders);
+});
+
+app.patch('/api/admin/orders/:id', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  const { status } = req.body;
+  if (!status) return res.status(400).json({ message: '請提供訂單狀態' });
+  const order = db.get('orders').find({ id: req.params.id }).value();
+  if (!order) return res.status(404).json({ message: '找不到訂單' });
+  db.get('orders').find({ id: order.id }).assign({ status }).write();
+  res.json({ ...order, status });
+});
+
+app.get('/api/admin/users', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  const users = db.get('users').value().map(({ password, ...rest }) => rest);
+  res.json(users);
+});
+
+app.patch('/api/admin/users/:id', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  const target = db.get('users').find({ id: Number(req.params.id) }).value();
+  if (!target) return res.status(404).json({ message: '找不到使用者' });
+  const { role, name } = req.body;
+  const updates = {};
+  if (role) updates.role = role;
+  if (name) updates.name = name;
+  db.get('users').find({ id: target.id }).assign(updates).write();
+  const { password, ...safeUser } = { ...target, ...updates };
+  res.json(safeUser);
+});
+
+app.get('/api/admin/ads', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  res.json(db.get('ads').value() ?? []);
+});
+
+app.post('/api/admin/ads', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  const { title, image, link, active, sortOrder } = req.body;
+  if (!title) return res.status(400).json({ message: '請提供標題' });
+  const ads = db.get('ads').value() ?? [];
+  const newAd = {
+    id: ads.length ? Math.max(...ads.map((a) => a.id)) + 1 : 1,
+    title,
+    image: image || '/images/courses/hot-1.png',
+    link: link || '/',
+    active: active !== false,
+    sortOrder: sortOrder ?? ads.length + 1,
+  };
+  db.get('ads').push(newAd).write();
+  res.status(201).json(newAd);
+});
+
+app.patch('/api/admin/ads/:id', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  const ad = db.get('ads').find({ id: Number(req.params.id) }).value();
+  if (!ad) return res.status(404).json({ message: '找不到廣告' });
+  db.get('ads').find({ id: ad.id }).assign(req.body).write();
+  res.json({ ...ad, ...req.body });
+});
+
+app.delete('/api/admin/ads/:id', (req, res) => {
+  const user = requireRole(req, res, ['admin']);
+  if (!user) return;
+  db.get('ads').remove({ id: Number(req.params.id) }).write();
+  res.json({ message: '已刪除' });
 });
 
 app.use('/api', router);

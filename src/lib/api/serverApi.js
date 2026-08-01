@@ -135,4 +135,115 @@ export const serverApi = {
       body: JSON.stringify({ status }),
     });
   },
+
+  getNotifications() {
+    return request('/notifications');
+  },
+
+  markNotificationRead(id) {
+    return request(`/notifications/${id}/read`, { method: 'PATCH' });
+  },
+
+  markAllNotificationsRead() {
+    return request('/notifications/read-all', { method: 'PATCH' });
+  },
+
+  updateProfile(data) {
+    return request('/settings/profile', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+
+  updatePassword(data) {
+    return request('/settings/password', {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+
+  getTeacherCourses() {
+    return request('/teacher/courses');
+  },
+
+  createTeacherCourse(data) {
+    return request('/teacher/courses', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  updateTeacherCourse(id, data) {
+    return request(`/teacher/courses/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+
+  submitTeacherCourse(id) {
+    return request(`/teacher/courses/${id}/submit`, { method: 'POST' });
+  },
+
+  getTeacherCourseStudents(id) {
+    return request(`/teacher/courses/${id}/students`);
+  },
+
+  getAdminStats() {
+    return request('/admin/stats');
+  },
+
+  getAdminCourses(params) {
+    return request(`/admin/courses${buildQuery(params)}`);
+  },
+
+  reviewAdminCourse(id, data) {
+    return request(`/admin/courses/${id}/review`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+
+  getAdminOrders() {
+    return request('/admin/orders');
+  },
+
+  updateAdminOrder(id, data) {
+    return request(`/admin/orders/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+
+  getAdminUsers() {
+    return request('/admin/users');
+  },
+
+  updateAdminUser(id, data) {
+    return request(`/admin/users/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+
+  getAdminAds() {
+    return request('/admin/ads');
+  },
+
+  createAdminAd(data) {
+    return request('/admin/ads', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  },
+
+  updateAdminAd(id, data) {
+    return request(`/admin/ads/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  },
+
+  deleteAdminAd(id) {
+    return request(`/admin/ads/${id}`, { method: 'DELETE' });
+  },
 };

@@ -1,6 +1,9 @@
 const USERS_KEY = 'triangle_mock_users';
 const PROFILES_KEY = 'triangle_profiles';
 const ORDERS_KEY = 'triangle_orders';
+const COURSES_KEY = 'triangle_courses';
+const NOTIFICATIONS_KEY = 'triangle_notifications';
+const ADS_KEY = 'triangle_ads';
 const DATA_URL = `${import.meta.env.BASE_URL}data/db.json`;
 const DEMO_ACCOUNT = 'demo_user';
 
@@ -36,14 +39,62 @@ function generateOrderId() {
 }
 
 function mergeCourseWithDetail(course, detail) {
-  if (!detail) return course;
+  const resolved = detail ?? buildDefaultCourseDetail(course);
+  const { description: _desc, ...rest } = course;
   return {
-    ...course,
-    description: detail.description,
-    chapters: detail.chapters,
-    duration: detail.duration,
-    units: detail.units,
-    reviews: detail.reviews,
+    ...rest,
+    description: resolved.description,
+    chapters: resolved.chapters,
+    duration: resolved.duration,
+    units: resolved.units,
+    reviews: resolved.reviews ?? [],
+  };
+}
+
+function buildDefaultCourseDetail(course) {
+  const unitTemplates = {
+    檢定: [
+      { id: 1, title: '單元 1 考試架構與題型分析', items: ['1.1 題型總覽', '1.2 時間分配策略'] },
+      { id: 2, title: '單元 2 核心解題技巧' },
+      { id: 3, title: '單元 3 實戰演練' },
+    ],
+    生活: [
+      { id: 1, title: '單元 1 日常會話基礎', items: ['1.1 問候與自我介紹'] },
+      { id: 2, title: '單元 2 情境對話' },
+    ],
+    商務: [
+      { id: 1, title: '單元 1 商務溝通基礎', items: ['1.1 會議英文'] },
+      { id: 2, title: '單元 2 簡報與談判' },
+    ],
+    簡報: [
+      { id: 1, title: '單元 1 簡報架構', items: ['1.1 開場技巧'] },
+      { id: 2, title: '單元 2 口語表達' },
+    ],
+  };
+
+  const units = unitTemplates[course.tag] || unitTemplates['生活'];
+  const unitCount = units.length;
+  const chapterCount = unitCount * 3 + 2;
+
+  let description;
+  if (Array.isArray(course.description) && course.description.length) {
+    description = course.description;
+  } else if (typeof course.description === 'string' && course.description.trim()) {
+    description = [course.description.trim()];
+  } else {
+    description = [
+      `《${course.title}》由 ${course.author} 主講，適合 ${course.level} 程度學員，聚焦${course.dept}實戰應用。`,
+      '課程採循序漸進設計，結合理論講解、例題演練與課後作業，幫助你在有限時間內建立完整能力。',
+    ];
+  }
+
+  return {
+    courseId: course.id,
+    description,
+    chapters: `${unitCount} 個單元 共 ${chapterCount} 個章節`,
+    duration: `${8 + (course.id % 5)} 小時 ${20 + (course.id % 40)} 分鐘`,
+    units,
+    reviews: [],
   };
 }
 
@@ -55,8 +106,13 @@ function getUsers(db) {
     const index = users.findIndex((item) => item.account === seedUser.account);
     if (index === -1) {
       users.push(seedUser);
-    } else if (seedUser.account === DEMO_ACCOUNT) {
-      users[index] = { ...users[index], password: seedUser.password };
+    } else {
+      users[index] = {
+        ...users[index],
+        password: seedUser.account === DEMO_ACCOUNT ? seedUser.password : users[index].password,
+        role: seedUser.role ?? users[index].role ?? 'student',
+        name: seedUser.name ?? users[index].name,
+      };
     }
   });
 
@@ -126,7 +182,12 @@ function buildProfileResponse(db, user) {
   const profile = getProfileForUser(db, user.id);
   const orders = getOrders(db).filter((order) => order.userId === user.id);
   return {
-    user: { id: user.id, account: user.account, name: user.name },
+    user: {
+      id: user.id,
+      account: user.account,
+      name: user.name,
+      role: user.role ?? 'student',
+    },
     email: profile.email,
     avatar: profile.avatar,
     achievements: profile.achievements,
@@ -142,8 +203,19 @@ function buildProfileResponse(db, user) {
   };
 }
 
-function filterCourses(courses, params = {}) {
+function filterCourses(courses, params = {}, options = {}) {
   let result = [...courses];
+  const { includeUnpublished = false } = options;
+
+  if (!includeUnpublished && !params.status) {
+    result = result.filter((course) => course.status === 'published');
+  }
+  if (params.status) {
+    result = result.filter((course) => course.status === params.status);
+  }
+  if (params.teacherId) {
+    result = result.filter((course) => course.teacherId === Number(params.teacherId));
+  }
 
   if (params.isHot !== undefined && params.isHot !== '') {
     const isHot = params.isHot === true || params.isHot === 'true';
@@ -174,20 +246,103 @@ function filterCourses(courses, params = {}) {
 function buildAuthResponse(user) {
   return {
     token: `mock-jwt-token-${user.id}`,
-    user: { id: user.id, account: user.account, name: user.name },
+    user: {
+      id: user.id,
+      account: user.account,
+      name: user.name,
+      role: user.role ?? 'student',
+    },
   };
+}
+
+function getMutableCourses(db) {
+  const stored = localStorage.getItem(COURSES_KEY);
+  if (stored) return JSON.parse(stored);
+  const initial = (db.courses || []).map((c) => ({
+    ...c,
+    teacherId: c.teacherId ?? 4,
+    status: c.status ?? 'published',
+  }));
+  localStorage.setItem(COURSES_KEY, JSON.stringify(initial));
+  return initial;
+}
+
+function saveCourses(courses) {
+  localStorage.setItem(COURSES_KEY, JSON.stringify(courses));
+}
+
+function getNotifications(db) {
+  const stored = localStorage.getItem(NOTIFICATIONS_KEY);
+  if (stored) return JSON.parse(stored);
+  const initial = db.notifications || [];
+  localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(initial));
+  return initial;
+}
+
+function saveNotifications(notifications) {
+  localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+}
+
+function getAds(db) {
+  const stored = localStorage.getItem(ADS_KEY);
+  if (stored) return JSON.parse(stored);
+  const initial = db.ads || [];
+  localStorage.setItem(ADS_KEY, JSON.stringify(initial));
+  return initial;
+}
+
+function saveAds(ads) {
+  localStorage.setItem(ADS_KEY, JSON.stringify(ads));
+}
+
+function computeAdminStats(orders, platformStats = {}) {
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 30);
+  const cutoffStr = cutoff.toISOString().slice(0, 10);
+  const recent = orders.filter((o) => o.status === 'completed' && o.date >= cutoffStr);
+  const totalSales = recent.reduce((sum, o) => sum + o.price, 0);
+  const totalOrders = recent.length;
+  return {
+    totalVisits: platformStats.totalVisits ?? 0,
+    totalSales,
+    totalOrders,
+    avgOrderValue: totalOrders ? Math.round(totalSales / totalOrders) : 0,
+  };
+}
+
+function addNotification(notifications, { userId, type, title, message }) {
+  const id = notifications.length ? Math.max(...notifications.map((n) => n.id)) + 1 : 1;
+  const notification = {
+    id,
+    userId,
+    type,
+    title,
+    message,
+    read: false,
+    createdAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
+  };
+  notifications.push(notification);
+  return notification;
 }
 
 export const staticApi = {
   async getCourses(params = {}) {
     const db = await loadDb();
-    return filterCourses(db.courses, params);
+    const courses = getMutableCourses(db);
+    return filterCourses(courses, params);
   },
 
   async getCourse(id) {
     const db = await loadDb();
-    const course = db.courses.find((item) => item.id === Number(id));
+    const courses = getMutableCourses(db);
+    const user = getCurrentUser();
+    const course = courses.find((item) => item.id === Number(id));
     if (!course) throw new Error('找不到課程');
+    const isOwner = user?.role === 'teacher' && course.teacherId === user.id;
+    const isAdmin = user?.role === 'admin';
+    if (course.status !== 'published' && !isOwner && !isAdmin) {
+      throw new Error('找不到課程');
+    }
     const detail = db.courseDetails?.find((item) => item.courseId === Number(id));
     return mergeCourseWithDetail(course, detail);
   },
@@ -241,6 +396,7 @@ export const staticApi = {
       account,
       password,
       name: account,
+      role: 'student',
     };
 
     saveUsers([...users, newUser]);
@@ -298,7 +454,8 @@ export const staticApi = {
 
   async addToCart(courseId) {
     const db = await loadDb();
-    const course = db.courses.find((item) => item.id === Number(courseId));
+    const courses = getMutableCourses(db);
+    const course = courses.find((item) => item.id === Number(courseId));
     if (!course) throw new Error('找不到課程');
 
     const prev = this._readCart();
@@ -330,7 +487,8 @@ export const staticApi = {
   async addLikeGoods(courseId) {
     const user = requireUser();
     const db = await loadDb();
-    const course = db.courses.find((item) => item.id === Number(courseId));
+    const courses = getMutableCourses(db);
+    const course = courses.find((item) => item.id === Number(courseId));
     if (!course) throw new Error('找不到課程');
 
     const profiles = getProfiles(db);
@@ -378,7 +536,8 @@ export const staticApi = {
     const profile = getProfileForUser(db, user.id);
 
     const createdOrders = items.map((item) => {
-      const course = db.courses.find((c) => c.id === item.id);
+      const courses = getMutableCourses(db);
+      const course = courses.find((c) => c.id === item.id);
       const order = {
         id: generateOrderId(),
         userId: user.id,
@@ -439,5 +598,321 @@ export const staticApi = {
     orders[index] = { ...orders[index], status };
     saveOrders(orders);
     return orders[index];
+  },
+
+  async getNotifications() {
+    const user = requireUser();
+    const db = await loadDb();
+    return getNotifications(db)
+      .filter((n) => n.userId === user.id)
+      .sort((a, b) => b.id - a.id);
+  },
+
+  async markNotificationRead(id) {
+    const user = requireUser();
+    const db = await loadDb();
+    const notifications = getNotifications(db);
+    const index = notifications.findIndex((n) => n.id === Number(id) && n.userId === user.id);
+    if (index === -1) throw new Error('找不到通知');
+    notifications[index] = { ...notifications[index], read: true };
+    saveNotifications(notifications);
+    return notifications[index];
+  },
+
+  async markAllNotificationsRead() {
+    const user = requireUser();
+    const db = await loadDb();
+    const notifications = getNotifications(db).map((n) =>
+      n.userId === user.id ? { ...n, read: true } : n
+    );
+    saveNotifications(notifications);
+    return { message: '已全部標為已讀' };
+  },
+
+  async updateProfile({ name, email }) {
+    const user = requireUser();
+    const db = await loadDb();
+    const users = getUsers(db);
+    const profiles = getProfiles(db);
+    const userIndex = users.findIndex((u) => u.id === user.id);
+    if (userIndex === -1) throw new Error('找不到使用者');
+
+    if (name) {
+      users[userIndex] = { ...users[userIndex], name };
+      saveUsers(users);
+      const stored = getCurrentUser();
+      if (stored) {
+        localStorage.setItem('user', JSON.stringify({ ...stored, name }));
+      }
+    }
+    if (email) {
+      const profile = getProfileForUser(db, user.id);
+      profile.email = email;
+      profiles[user.id] = profile;
+      saveProfiles(profiles);
+    }
+
+    const updatedUser = getUsers(db).find((u) => u.id === user.id);
+    return buildProfileResponse(db, updatedUser);
+  },
+
+  async updatePassword({ currentPassword, newPassword, confirmPassword }) {
+    const user = requireUser();
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      throw new Error('請填寫完整資訊');
+    }
+    if (newPassword !== confirmPassword) throw new Error('兩次密碼不一致');
+
+    const db = await loadDb();
+    const users = getUsers(db);
+    const index = users.findIndex((u) => u.id === user.id);
+    if (users[index].password !== currentPassword) throw new Error('目前密碼錯誤');
+
+    users[index] = { ...users[index], password: newPassword };
+    saveUsers(users);
+    return { message: '密碼更新成功' };
+  },
+
+  async getTeacherCourses() {
+    const user = requireUser();
+    if (user.role !== 'teacher') throw new Error('權限不足');
+    const db = await loadDb();
+    return getMutableCourses(db)
+      .filter((c) => c.teacherId === user.id)
+      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  },
+
+  async createTeacherCourse(data) {
+    const user = requireUser();
+    if (user.role !== 'teacher') throw new Error('權限不足');
+    const db = await loadDb();
+    const courses = getMutableCourses(db);
+    const newCourse = {
+      id: courses.length ? Math.max(...courses.map((c) => c.id)) + 1 : 1,
+      title: data.title,
+      image: '/images/courses/hot-1.png',
+      tag: data.tag || '生活',
+      level: data.level || 'A2',
+      author: user.name,
+      dept: data.dept || '生活英文',
+      price: Number(data.price) || 0,
+      students: 0,
+      isHot: false,
+      createdAt: new Date().toISOString(),
+      courseType: data.courseType || '影音課',
+      teacherId: user.id,
+      status: 'draft',
+      description: data.description || '',
+    };
+    courses.push(newCourse);
+    saveCourses(courses);
+    return newCourse;
+  },
+
+  async updateTeacherCourse(id, data) {
+    const user = requireUser();
+    if (user.role !== 'teacher') throw new Error('權限不足');
+    const db = await loadDb();
+    const courses = getMutableCourses(db);
+    const index = courses.findIndex((c) => c.id === Number(id) && c.teacherId === user.id);
+    if (index === -1) throw new Error('找不到課程');
+    if (courses[index].status === 'published') throw new Error('已上架課程無法直接編輯');
+
+    const allowed = ['title', 'tag', 'level', 'dept', 'price', 'courseType', 'description', 'image'];
+    allowed.forEach((key) => {
+      if (data[key] !== undefined) courses[index] = { ...courses[index], [key]: data[key] };
+    });
+    saveCourses(courses);
+    return courses[index];
+  },
+
+  async submitTeacherCourse(id) {
+    const user = requireUser();
+    if (user.role !== 'teacher') throw new Error('權限不足');
+    const db = await loadDb();
+    const courses = getMutableCourses(db);
+    const index = courses.findIndex((c) => c.id === Number(id) && c.teacherId === user.id);
+    if (index === -1) throw new Error('找不到課程');
+    if (!['draft', 'rejected'].includes(courses[index].status)) {
+      throw new Error('此課程狀態無法提交審核');
+    }
+    courses[index] = { ...courses[index], status: 'pending_review' };
+    saveCourses(courses);
+
+    const notifications = getNotifications(db);
+    const users = getUsers(db);
+    users.filter((u) => u.role === 'admin').forEach((admin) => {
+      addNotification(notifications, {
+        userId: admin.id,
+        type: 'course_pending',
+        title: '新課程待審核',
+        message: `${user.name} 提交了「${courses[index].title}」待審核。`,
+      });
+    });
+    saveNotifications(notifications);
+    return courses[index];
+  },
+
+  async getTeacherCourseStudents(id) {
+    const user = requireUser();
+    if (user.role !== 'teacher') throw new Error('權限不足');
+    const db = await loadDb();
+    const courses = getMutableCourses(db);
+    const course = courses.find((c) => c.id === Number(id) && c.teacherId === user.id);
+    if (!course) throw new Error('找不到課程');
+
+    const orders = getOrders(db).filter(
+      (o) => o.courseId === course.id && o.status === 'completed'
+    );
+    const users = getUsers(db);
+    return orders.map((order) => {
+      const student = users.find((u) => u.id === order.userId);
+      const profile = getProfileForUser(db, order.userId);
+      const myCourse = profile.myCourses?.find((c) => c.courseId === course.id);
+      return {
+        userId: order.userId,
+        name: student?.name ?? '未知',
+        email: profile.email ?? '',
+        progress: myCourse?.progress ?? 0,
+        lastStudy: myCourse?.lastStudy ?? null,
+        purchasedAt: order.date,
+      };
+    });
+  },
+
+  async getAdminStats() {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    return computeAdminStats(getOrders(db), db.platformStats ?? {});
+  },
+
+  async getAdminCourses(params = {}) {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    let courses = getMutableCourses(db);
+    if (params.status) courses = courses.filter((c) => c.status === params.status);
+    return courses.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  },
+
+  async reviewAdminCourse(id, { action, reason }) {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    const courses = getMutableCourses(db);
+    const index = courses.findIndex((c) => c.id === Number(id));
+    if (index === -1) throw new Error('找不到課程');
+    if (courses[index].status !== 'pending_review') throw new Error('此課程不在待審核狀態');
+
+    const newStatus = action === 'approve' ? 'published' : 'rejected';
+    courses[index] = { ...courses[index], status: newStatus };
+    saveCourses(courses);
+
+    if (action === 'approve') {
+      const details = db.courseDetails ?? [];
+      if (!details.some((d) => d.courseId === courses[index].id)) {
+        db.courseDetails = [...details, buildDefaultCourseDetail(courses[index])];
+      }
+    }
+
+    const notifications = getNotifications(db);
+    addNotification(notifications, {
+      userId: courses[index].teacherId,
+      type: 'course_review_result',
+      title: action === 'approve' ? '課程審核通過' : '課程審核未通過',
+      message:
+        action === 'approve'
+          ? `「${courses[index].title}」已通過審核並上架。`
+          : `「${courses[index].title}」未通過審核。${reason ? `原因：${reason}` : ''}`,
+    });
+    saveNotifications(notifications);
+    return courses[index];
+  },
+
+  async getAdminOrders() {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    return getOrders(db).sort((a, b) => b.date.localeCompare(a.date));
+  },
+
+  async updateAdminOrder(id, { status }) {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    const orders = getOrders(db);
+    const index = orders.findIndex((o) => o.id === id);
+    if (index === -1) throw new Error('找不到訂單');
+    orders[index] = { ...orders[index], status };
+    saveOrders(orders);
+    return orders[index];
+  },
+
+  async getAdminUsers() {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    return getUsers(db).map(({ password, ...rest }) => rest);
+  },
+
+  async updateAdminUser(id, { role, name }) {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    const users = getUsers(db);
+    const index = users.findIndex((u) => u.id === Number(id));
+    if (index === -1) throw new Error('找不到使用者');
+    if (role) users[index] = { ...users[index], role };
+    if (name) users[index] = { ...users[index], name };
+    saveUsers(users);
+    const { password, ...safeUser } = users[index];
+    return safeUser;
+  },
+
+  async getAdminAds() {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    return getAds(db);
+  },
+
+  async createAdminAd(data) {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    const ads = getAds(db);
+    const newAd = {
+      id: ads.length ? Math.max(...ads.map((a) => a.id)) + 1 : 1,
+      title: data.title,
+      image: data.image || '/images/courses/hot-1.png',
+      link: data.link || '/',
+      active: data.active !== false,
+      sortOrder: data.sortOrder ?? ads.length + 1,
+    };
+    ads.push(newAd);
+    saveAds(ads);
+    return newAd;
+  },
+
+  async updateAdminAd(id, data) {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    const ads = getAds(db);
+    const index = ads.findIndex((a) => a.id === Number(id));
+    if (index === -1) throw new Error('找不到廣告');
+    ads[index] = { ...ads[index], ...data };
+    saveAds(ads);
+    return ads[index];
+  },
+
+  async deleteAdminAd(id) {
+    const user = requireUser();
+    if (user.role !== 'admin') throw new Error('權限不足');
+    const db = await loadDb();
+    const ads = getAds(db).filter((a) => a.id !== Number(id));
+    saveAds(ads);
+    return { message: '已刪除' };
   },
 };

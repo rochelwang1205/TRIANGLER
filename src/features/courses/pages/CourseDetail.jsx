@@ -20,7 +20,7 @@ export default function CourseDetail() {
   const { addItem } = useCart();
   const { isLoggedIn } = useAuth();
 
-  const { data: courseData, isPending: courseLoading } = useCourse(id);
+  const { data: courseData, isPending: courseLoading, error: courseError } = useCourse(id);
   const { data: relatedData = [] } = useCourses(
     { _sort: 'students', _order: 'desc' },
     { enabled: Boolean(id) }
@@ -62,13 +62,30 @@ export default function CourseDetail() {
     }
   };
 
-  if (courseLoading || !course) {
+  if (courseLoading) {
     return (
       <main className="course-detail-page">
         <div className="container"><p>載入中...</p></div>
       </main>
     );
   }
+
+  if (courseError || !course) {
+    return (
+      <main className="course-detail-page">
+        <div className="container">
+          <p>{courseError?.message || '找不到課程'}</p>
+          <p className="more-link"><Link to="/explore">返回課程列表</Link></p>
+        </div>
+      </main>
+    );
+  }
+
+  const descriptionParagraphs = Array.isArray(course.description)
+    ? course.description
+    : course.description
+      ? [course.description]
+      : [];
 
   return (
     <main className="course-detail-page">
@@ -116,7 +133,7 @@ export default function CourseDetail() {
         <section className="course-section">
           <h2>課程介紹</h2>
           <div className="course-intro-box">
-            {(course.description || []).map((p, i) => <p key={i}>{p}</p>)}
+            {descriptionParagraphs.map((p, i) => <p key={i}>{p}</p>)}
           </div>
         </section>
 

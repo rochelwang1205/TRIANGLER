@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 import { MdClose } from 'react-icons/md';
+import { getDashboardPath } from '@/features/auth/constants/roles';
 
 export default function MobileMenu({ open, onClose, user, onLogin }) {
   if (!open) return null;
+
+  const accountPath = user ? getDashboardPath(user.role ?? 'student') : '/profile';
 
   return (
     <div className="mobile-menu">
@@ -11,7 +14,7 @@ export default function MobileMenu({ open, onClose, user, onLogin }) {
       </button>
       <nav className="mobile-menu__nav">
         {user ? (
-          <Link to="/profile" onClick={onClose}>我的帳戶</Link>
+          <Link to={accountPath} onClick={onClose}>我的帳戶</Link>
         ) : (
           <button type="button" onClick={() => { onLogin(); onClose(); }}>我的帳戶</button>
         )}
