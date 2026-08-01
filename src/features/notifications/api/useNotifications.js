@@ -1,12 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api/api';
 import { queryKeys } from '@/lib/react-query/queryKeys';
+import { useAuth } from '@/features/auth/context/AuthContext';
 
 export function useNotifications(options = {}) {
+  const { user } = useAuth();
+  const { enabled = true, ...rest } = options;
+
   return useQuery({
-    queryKey: queryKeys.notifications,
+    queryKey: [...queryKeys.notifications, user?.id ?? 'guest'],
     queryFn: () => api.getNotifications(),
-    ...options,
+    enabled: Boolean(user) && enabled,
+    ...rest,
   });
 }
 

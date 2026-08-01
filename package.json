@@ -7,7 +7,7 @@
     "dev": "vite",
     "server": "node server/server.js",
     "dev:all": "concurrently \"npm run dev\" \"npm run server\"",
-    "build": "node scripts/generate-course-details.js && node scripts/sync-static-data.js && vite build",
+    "build": "node scripts/generate-course-details.js && node scripts/sync-static-data.js && vite build && node scripts/copy-spa-404.js",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:api": "node scripts/test-api.js",

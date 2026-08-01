@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo, useState, useCallback } from 'react';
 import { getStoredUser } from '../utils/auth';
 import { ROLES } from '../constants/roles';
+import { queryClient } from '@/lib/react-query/queryClient';
 
 const AuthContext = createContext(null);
 
@@ -8,12 +9,14 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(getStoredUser);
 
   const login = useCallback((loggedInUser, token) => {
+    queryClient.clear();
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(loggedInUser));
     setUser(loggedInUser);
   }, []);
 
   const logout = useCallback(() => {
+    queryClient.clear();
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setUser(null);

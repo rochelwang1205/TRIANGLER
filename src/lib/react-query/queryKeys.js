@@ -12,7 +12,7 @@ export const queryKeys = {
   quiz: ['quiz'],
   notifications: ['notifications'],
   teacher: {
-    courses: ['teacher', 'courses'],
+    courses: (userId) => ['teacher', 'courses', userId ?? 'guest'],
     students: (id) => ['teacher', 'students', id],
   },
   admin: {
