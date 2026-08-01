@@ -12,7 +12,11 @@ export function CartProvider({ children }) {
   const { user } = useAuth();
 
   const refreshCart = useCallback(async () => {
+    setLoading(true);
     try {
+      if (user) {
+        await api.mergeGuestCart();
+      }
       const data = await api.getCart();
       setItems(Array.isArray(data) ? data : data.items || []);
     } catch {
@@ -20,11 +24,11 @@ export function CartProvider({ children }) {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     refreshCart();
-  }, [refreshCart, user]);
+  }, [refreshCart]);
 
   const addItem = useCallback(async (course) => {
     try {

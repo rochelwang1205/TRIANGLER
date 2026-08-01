@@ -478,6 +478,40 @@ export const staticApi = {
     return { items: [] };
   },
 
+  async mergeGuestCart() {
+    const user = requireUser();
+    const guestKey = 'triangle_cart_guest';
+    let guestItems = [];
+    try {
+      const stored = localStorage.getItem(guestKey);
+      guestItems = stored ? JSON.parse(stored) : [];
+    } catch {
+      guestItems = [];
+    }
+    if (!guestItems.length) {
+      return { items: this._readCart() };
+    }
+
+    const userKey = `triangle_cart_${user.id}`;
+    let userItems = [];
+    try {
+      const stored = localStorage.getItem(userKey);
+      userItems = stored ? JSON.parse(stored) : [];
+    } catch {
+      userItems = [];
+    }
+
+    const merged = [...userItems];
+    for (const item of guestItems) {
+      if (merged.length >= 3) break;
+      if (!merged.some((i) => i.id === item.id)) merged.push(item);
+    }
+
+    localStorage.setItem(userKey, JSON.stringify(merged));
+    localStorage.removeItem(guestKey);
+    return { items: merged };
+  },
+
   async getProfile() {
     const user = requireUser();
     const db = await loadDb();

@@ -23,7 +23,7 @@ function FieldError({ message }) {
 }
 
 export default function Checkout() {
-  const { items, removeItem, total } = useCart();
+  const { items, removeItem, total, loading } = useCart();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [method, setMethod] = useState(PAYMENT_METHODS[0]);
@@ -42,6 +42,17 @@ export default function Checkout() {
       setShowLogin(true);
     }
   }, [isLoggedIn]);
+
+  if (loading) {
+    return (
+      <main className="checkout-page">
+        <div className="container text-center">
+          <h1 className="page-title">結帳</h1>
+          <p>載入中...</p>
+        </div>
+      </main>
+    );
+  }
 
   if (items.length === 0) {
     return (

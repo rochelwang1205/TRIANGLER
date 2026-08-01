@@ -83,6 +83,10 @@ function getCartItems(req) {
 
 function saveCartItems(req, items) {
   const key = getCartKey(req);
+  return saveCartItemsByKey(key, items);
+}
+
+function saveCartItemsByKey(key, items) {
   const existing = db.get('carts').find({ key }).value();
   if (existing) {
     db.get('carts').find({ key }).assign({ items }).write();
@@ -256,6 +260,30 @@ app.delete('/api/cart/:courseId', (req, res) => {
 app.delete('/api/cart', (req, res) => {
   saveCartItems(req, []);
   res.json({ items: [] });
+});
+
+app.post('/api/cart/merge-guest', (req, res) => {
+  const userId = requireAuth(req, res);
+  if (!userId) return;
+
+  const guestItems = db.get('carts').find({ key: 'guest' }).value()?.items || [];
+  const userKey = `user_${userId}`;
+
+  if (!guestItems.length) {
+    return res.json({ items: getCartItems(req) });
+  }
+
+  const userItems = db.get('carts').find({ key: userKey }).value()?.items || [];
+  const merged = [...userItems];
+
+  for (const item of guestItems) {
+    if (merged.length >= 3) break;
+    if (!merged.some((i) => i.id === item.id)) merged.push(item);
+  }
+
+  saveCartItemsByKey(userKey, merged);
+  saveCartItemsByKey('guest', []);
+  res.json({ items: merged });
 });
 
 app.get('/api/profile', (req, res) => {

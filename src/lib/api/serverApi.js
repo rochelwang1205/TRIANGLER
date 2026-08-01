@@ -102,6 +102,10 @@ export const serverApi = {
     return request('/cart', { method: 'DELETE' });
   },
 
+  mergeGuestCart() {
+    return request('/cart/merge-guest', { method: 'POST' });
+  },
+
   getProfile() {
     return request('/profile');
   },

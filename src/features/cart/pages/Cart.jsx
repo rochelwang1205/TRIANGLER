@@ -6,7 +6,7 @@ import { useAuth } from '@/features/auth/context/AuthContext';
 import AuthLoginModal from '@/features/auth/components/AuthLoginModal';
 
 export default function Cart() {
-  const { items, removeItem, total, isFull } = useCart();
+  const { items, removeItem, total, isFull, loading } = useCart();
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false);
@@ -34,7 +34,9 @@ export default function Cart() {
         )}
 
         <div className="cart-box">
-          {items.length === 0 ? (
+          {loading ? (
+            <p className="cart-box__empty">載入中...</p>
+          ) : items.length === 0 ? (
             <p className="cart-box__empty">還沒有加入任何課程~</p>
           ) : (
             <ul className="cart-items">
