@@ -13,11 +13,6 @@ export default function Footer() {
             <p>Try and Go</p>
             <p>開啟你的英語之門，通向精通之路</p>
           </div>
-          <div className="site-footer__social">
-            <a href="https://wangrochel.wixsite.com/cydesign2021" aria-label="Facebook"><FaFacebook size={28} /></a>
-            <a href="https://wangrochel.wixsite.com/cydesign2021" aria-label="Twitter"><FaTwitter size={28} /></a>
-            <a href="https://wangrochel.wixsite.com/cydesign2021" aria-label="Instagram"><FaInstagram size={28} /></a>
-          </div>
         </div>
 
         <div className="site-footer__links">
@@ -77,6 +72,12 @@ export default function Footer() {
               <li>校園方案</li>
             </ul>
           </div>
+        </div>
+
+        <div className="site-footer__social">
+          <a href="https://wangrochel.wixsite.com/cydesign2021" aria-label="Facebook"><FaFacebook size={28} /></a>
+          <a href="https://wangrochel.wixsite.com/cydesign2021" aria-label="Twitter"><FaTwitter size={28} /></a>
+          <a href="https://wangrochel.wixsite.com/cydesign2021" aria-label="Instagram"><FaInstagram size={28} /></a>
         </div>
       </div>
     </footer>

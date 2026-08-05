@@ -5,6 +5,8 @@ import CourseCard from '@/features/courses/components/CourseCard';
 import CourseCardWide from '@/features/courses/components/CourseCardWide';
 import CourseCardRow from '@/features/courses/components/CourseCardRow';
 import CourseCarousel from '@/features/courses/components/CourseCarousel';
+import EmblaCarousel from '@/components/EmblaCarousel';
+import LoadingScreen from '@/components/LoadingScreen';
 import { useCourses } from '@/features/courses/api/useCourses';
 import { useTestimonials } from '@/features/home/api/useTestimonials';
 import { resolveCourses } from '@/features/courses/utils/courseImages';
@@ -46,7 +48,7 @@ export default function Home() {
   if (loading) {
     return (
       <main className="home-page">
-        <div className="container"><p>載入中...</p></div>
+        <LoadingScreen />
       </main>
     );
   }
@@ -88,7 +90,7 @@ export default function Home() {
         <div className="container">
           <div className="recommend-banner__card">
             <div className="recommend-banner__image">
-              <img src={recommandImg} alt="客製化課程推薦" />
+              <img src={recommandImg} alt="客製化課程推薦" className="float-y" />
             </div>
             <div className="recommend-banner__text">
               <h3>客製化課程推薦</h3>
@@ -148,18 +150,29 @@ export default function Home() {
         <img src={reviewBg} alt="" className="review-section__bg" aria-hidden="true" />
         <div className="container">
           <h2 className="section-title">學員好評</h2>
-          <CourseCarousel className="review-carousel">
+          <EmblaCarousel
+            className="review-carousel"
+            autoplayDelay={5000}
+            options={{
+              slidesToScroll: 3,
+              breakpoints: {
+                '(max-width: 576px)': { slidesToScroll: 1 },
+              },
+            }}
+          >
             {testimonials.map((item) => (
-              <div key={item.id} className="review-card">
-                <h6 className="review-card__name">{item.name}</h6>
-                {item.title && <p className="review-card__headline">{item.title}</p>}
-                <div className="review-card__stars">
-                  {'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}
+              <div key={item.id} className="review-card d-flex flex-column">
+                <div className="d-lg-flex justify-content-between">
+                  <h6 className="review-card__name">{item.name}</h6>
+                  <div className="review-card__stars">
+                    {'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}
+                  </div>
                 </div>
+                {item.title && <p className="review-card__headline fw-bold">{item.title}</p>}
                 <p>{item.text}</p>
               </div>
             ))}
-          </CourseCarousel>
+          </EmblaCarousel>
         </div>
       </section>
 

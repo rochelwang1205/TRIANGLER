@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MdExpandMore } from 'react-icons/md';
 
 export default function FaqAccordion({ categories }) {
-  const [openId, setOpenId] = useState(categories[0]?.id || null);
+  const [openId, setOpenId] = useState(null);
 
   const toggle = (id) => setOpenId(openId === id ? null : id);
 

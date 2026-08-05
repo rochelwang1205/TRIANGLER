@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import LoadingScreen from '@/components/LoadingScreen';
 import { useSubmitRecommend } from '@/features/recommend/api/useRecommend';
 import { getRecommendAnswers, setRecommendResults } from '../utils/recommendStorage';
 import { resolveCourses } from '@/features/courses/utils/courseImages';
@@ -19,16 +20,14 @@ export default function RecommendLoading() {
 
   return (
     <main className="recommend-page">
-      <div className="container recommend-loading">
-        <h1 className="page-title">
-          {submitRecommend.error ? '推薦失敗' : '客製化課程推薦中...'}
-        </h1>
-        {submitRecommend.error ? (
+      {submitRecommend.error ? (
+        <div className="container recommend-loading">
+          <h1 className="page-title">推薦失敗</h1>
           <p>{submitRecommend.error.message}</p>
-        ) : (
-          <div className="loading-placeholder" />
-        )}
-      </div>
+        </div>
+      ) : (
+        <LoadingScreen text="客製化課程推薦中" />
+      )}
     </main>
   );
 }

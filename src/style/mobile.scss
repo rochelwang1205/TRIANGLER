@@ -212,6 +212,67 @@
   }
 }
 
+.course-carousel--no-arrows {
+  padding: 0;
+}
+
+.embla {
+  position: relative;
+
+  &__viewport {
+    overflow: hidden;
+  }
+
+  &__container {
+    display: flex;
+    touch-action: pan-y pinch-zoom;
+  }
+
+  &__slide {
+    min-width: 0;
+  }
+
+  &__dots {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  &__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    padding: 0;
+
+    &.active {
+      background: #12082B;
+    }
+  }
+}
+
+.review-carousel {
+  .embla__container {
+    gap: 1.5rem;
+  }
+
+  .embla__slide {
+    flex: 0 0 calc((100% - 3rem) / 3);
+  }
+
+  .review-card {
+    height: 100%;
+  }
+
+  @media (max-width: 576px) {
+    .embla__slide {
+      flex: 0 0 100%;
+    }
+  }
+}
+
 .course-card-row {
   display: flex;
   gap: 1rem;

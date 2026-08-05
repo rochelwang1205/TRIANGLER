@@ -65,13 +65,19 @@
 .navbar-icons {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 1rem;
+  margin-left: auto;
 
   button {
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
+    color: #12082B;
+  }
+
+  .navbar-toggler {
     color: #12082B;
   }
 }

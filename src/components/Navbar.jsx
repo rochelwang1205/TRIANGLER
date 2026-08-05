@@ -40,14 +40,6 @@ export default function Navbar() {
           <Link className="navbar-brand site-logo" to="/">
             Tr<span className="site-logo__i">i</span>angle
           </Link>
-          <button
-            className="navbar-toggler d-lg-none"
-            type="button"
-            onClick={() => setMenuOpen(true)}
-            aria-label="開啟選單"
-          >
-            <MdMenu size={24} />
-          </button>
           <div className="collapse navbar-collapse justify-content-center d-none d-lg-flex" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item"><Link className="nav-link" to="/">首頁</Link></li>
@@ -71,6 +63,14 @@ export default function Navbar() {
                 <MdOutlineAccountCircle size={24} />
               </button>
             )}
+            <button
+              className="navbar-toggler d-lg-none"
+              type="button"
+              onClick={() => setMenuOpen(true)}
+              aria-label="開啟選單"
+            >
+              <MdMenu size={24} />
+            </button>
           </div>
         </div>
       </nav>
